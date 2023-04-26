@@ -256,10 +256,10 @@
 
     <!-- Footer Section-->
     <section>
-    <footer class="footer bg-white relative pt-1 border-b-2 border-green-700">
+    <footer class="footer bg-gray-800 relative pt-1 border-b-2 border-green-700">
         <div class="container mx-auto px-6">
-            <div class="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
-                <div class="sm:w-2/3 text-center py-6">
+            <div class="mt-16 border-t-2 border-gray-400 flex flex-col items-center">
+                <div class="text-center py-6">
                     <p class="text-sm text-green-700 font-bold mb-2">
                         © 2023 OPENSCORE
                     </p>
