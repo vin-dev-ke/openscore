@@ -26,6 +26,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'usersCount'=> User::all()->count(),
         'scamsCount'=> Scam::all()->count(),
+        'usersCount'=> User::all()->count(),
+        'scamsCount'=> Scam::all()->count(),
     ]);
 });
 
