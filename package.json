@@ -21,6 +21,9 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^1.0.6",
-        "vue": "^3.2.36"
+        "chart.js": "^4.3.0",
+        "moment": "^2.29.4",
+        "vue": "^3.2.36",
+        "vue-chartjs": "^5.2.0"
     }
 }

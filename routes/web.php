@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GoogleSocialiteController;
+use App\Models\Scam;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +24,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'usersCount'=> User::all()->count(),
+        'scamsCount'=> Scam::all()->count(),
     ]);
 });
 
@@ -33,7 +37,18 @@ Route::middleware([
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Dashboard');
     // });
+
+    //Dashboard
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+
+    //Users
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('users/restore/{id}', [App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
+
+    //Scams
+    Route::resource('/scams', App\Http\Controllers\ScamController::class);
+    Route::get('/media', [App\Http\Controllers\FileController::class, 'index']);
 });
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);

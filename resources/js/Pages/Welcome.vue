@@ -56,7 +56,7 @@
                             <path d="M8 17l4 4 4-4m-4-5v9"></path>
                             <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
                         </svg>
-                        <h2 class="title-font font-medium text-3xl text-gray-900">2.7K</h2>
+                        <h2 class="title-font font-medium text-3xl text-gray-900">{{ scamsCount }}</h2>
                         <p class="leading-relaxed">Scam reports</p>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                         </svg>
-                        <h2 class="title-font font-medium text-3xl text-gray-900">1.3K</h2>
+                        <h2 class="title-font font-medium text-3xl text-gray-900">{{ usersCount }}</h2>
                         <p class="leading-relaxed">Users</p>
                     </div>
                 </div>
@@ -279,5 +279,7 @@ defineProps({
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+    usersCount: Number,
+    scamsCount: Number,
 });
 </script>
