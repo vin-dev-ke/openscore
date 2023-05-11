@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('scams', function (Blueprint $table) {
             $table->id();
+<<<<<<< HEAD
             $table->text('content');
             $table->string('contact');
             $table->string('payment')->nullable();
@@ -27,6 +28,13 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->softDeletes();
+=======
+            $table->string('content');
+            $table->string('contact');
+            $table->string('payment')->nullable();
+            $table->unsignedBigInteger('file_id')->nullable();
+            $table->foreign('file_id')->references('id')->on('files')->onDelete('set null');
+>>>>>>> 4494bb2 (Add users and scams sections for admin)
             $table->timestamps();
         });
     }

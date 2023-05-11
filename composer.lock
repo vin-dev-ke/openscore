@@ -5,10 +5,14 @@
         "This file is @generated automatically"
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
     "content-hash": "8871892b183a423f89bc520342017428",
 =======
     "content-hash": "72bd76caf12cb2c93cba92eeb4eed0a3",
 >>>>>>> 45b0c05 (Set up google auth and auth screens)
+=======
+    "content-hash": "8871892b183a423f89bc520342017428",
+>>>>>>> 4494bb2 (Add users and scams sections for admin)
     "packages": [
         {
             "name": "bacon/bacon-qr-code",

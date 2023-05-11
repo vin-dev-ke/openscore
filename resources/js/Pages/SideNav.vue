@@ -8,6 +8,14 @@
                         </div>
                     </Link>
                 </div>
+                <div class="p-2.5 mt-5 flex items-center rounded-md py-3 px-4 duration-300 cursor-pointer text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                    <form action="">
+                        <input type="text" name="search" autocomplete="off" placeholder="Search" class="bg-transparent ml-4 w-full focus:outline-none">
+                    </form>
+                </div>
     
                 <!-- Dashboard -->
                 <Link :href="route('dashboard')">
@@ -77,7 +85,6 @@
 </template>
 <script>
 import { Link } from '@inertiajs/vue3';
-
 export default {
     components: {
         Link
