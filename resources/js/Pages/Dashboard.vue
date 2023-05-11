@@ -1,32 +1,36 @@
-<script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import Welcome from '@/Components/Welcome.vue';
-</script>
-
 <template>
-    <AppLayout title="Dashboard">
+    <!-- <AppLayout title="Dashboard"> -->
         <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
             </h2>
         </template> -->
-    <div class="py-12">
+        
+    <!-- </AppLayout> -->
+    <section>
+    <Head title="Dashboard" />
         <!-- Content for admin role -->
         <div v-if="role === 'admin'">
-          <h1>Welcome Admin!</h1>
+          <AdminDash/>
         </div>
 
         <!-- Content for other roles -->
         <div v-else>
           <h1>Welcome User!</h1>
         </div>
-    </div>
-    </AppLayout>
+    </section>
 </template>
 <script>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import Welcome from '@/Components/Welcome.vue';
+import AdminDash from './AdminDash.vue';
+import { Head } from '@inertiajs/vue3';
 export default {
     props: {
         role: String,
     },
+    components: {
+        AdminDash, Head
+    }
 }
 </script>
