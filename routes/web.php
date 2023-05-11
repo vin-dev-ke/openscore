@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\GoogleSocialiteController;
-<<<<<<< HEAD
 use App\Models\Scam;
 use App\Models\User;
-=======
->>>>>>> 45b0c05 (Set up google auth and auth screens)
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,8 +26,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'usersCount'=> User::all()->count(),
         'scamsCount'=> Scam::all()->count(),
-        'usersCount'=> User::all()->count(),
-        'scamsCount'=> Scam::all()->count(),
     ]);
 });
 
@@ -42,7 +37,6 @@ Route::middleware([
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Dashboard');
     // });
-<<<<<<< HEAD
 
     //Dashboard
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
@@ -54,17 +48,10 @@ Route::middleware([
 
     //Scams
     Route::resource('/scams', App\Http\Controllers\ScamController::class);
-<<<<<<< HEAD
-    Route::get('/media', [App\Http\Controllers\FileController::class, 'index']);
-=======
-    Route::get('/upload', [App\Http\Controllers\FileController::class, 'upload']);
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
-=======
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
->>>>>>> 45b0c05 (Set up google auth and auth screens)
->>>>>>> c5be46e (Fix conflicts)
+
 });
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);
