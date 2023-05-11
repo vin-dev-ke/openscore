@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+use function PHPSTORM_META\type;
+
 class HomeController extends Controller
 {
     public function index ()
