@@ -3,7 +3,15 @@
     <SideNav/>
 
     <div class="flex flex-col max-w-7xl ml-80 mt-20 justify-center items-center py-6 sm:px-6 lg:px-8">
-      <h1 class="leading-5 font-bold text-green-400 mb-8 uppercase text-3xl">User management records</h1>
+      <h1 class="leading-5 font-bold text-green-400 mb-4 uppercase text-3xl">User management records</h1>
+
+    <!-- Search field -->
+    <div class="flex md:flex-nowrap flex-wrap justify-start items-end md:justify-start mb-3 mt-3">
+      <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
+        <input v-model="search_term" @keyup="search" name="search" type="text" autocomplete="off" placeholder="Search" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+    </div>
+
       <!-- Users datatable -->
       <table class="overflow-x-auto table-auto shadow-lg bg-white">
       <thead>
@@ -98,20 +106,25 @@ import { Head } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import SideNav from './SideNav.vue';
 import moment from 'moment';
+import _ from 'lodash';
 
 export default {
     components: {
         Head, SideNav, Link
     },
     data() {
-        return {
-            showSection: {},
+      return {
+          search_term: '',
+          showSection: {},
         };
     },
     props: {
         users: Object,
-    },
+    },    
     methods: {
+      search: _.throttle(function () {
+          this.$inertia.replace(this.route('users.index',{search_term: this.search_term}))
+      }, 200),
       formatDate(date) {
         return moment(date).fromNow();
       },

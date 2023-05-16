@@ -24,7 +24,10 @@ class HomeController extends Controller
                 'scams_count' => $scams_count,
             ]);
         } else {
-            return Inertia::render('UserDash');
+            $user = Auth::user();
+            return Inertia::render('UserDash', [
+                'user' => $user,
+            ]);
         }
 
     }

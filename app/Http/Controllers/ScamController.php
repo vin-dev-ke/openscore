@@ -11,9 +11,11 @@ class ScamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $scams = Scam::withTrashed()->paginate(3);
+        $scams = Scam::withTrashed()
+            ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
+            ->paginate(3);
 
         return Inertia::render('Scam', [
             'scams' => $scams
