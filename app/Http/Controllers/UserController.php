@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Scam;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     //All users
-    public function index ()
+    public function index (Request $request)
     {
         $role = Auth::user()->roles[0]->first();
 
@@ -21,10 +22,14 @@ class UserController extends Controller
             }
     
             // If the user is an admin, show the users page
-            $users = User::withTrashed()->paginate(2);
+            $users = User::withTrashed()
+                ->when($request->search_term, function($query,$search_term){$query->where('name', 'LIKE','%'.$search_term.'%');})
+                ->paginate(2);
+            
             return Inertia::render('Users', [
-                'users' => $users
+                'users' => $users,
             ]);
+            
         } catch (\Exception $e) {
 
             // If an exception is thrown, redirect the user to the home page

@@ -2,7 +2,17 @@
     <Head title="Scam Reports" />
     <SideNav/>
 
-    <h1 class="flex items-center justify-center mt-8 mb-4 text-2xl font-semibold text-green-400 uppercase">All scam posts</h1>
+    <div class="flex flex-col items-center justify-center mt-8 mb-2">
+      <h1 class="mb-4 text-2xl font-semibold text-green-400 uppercase">All scam posts</h1>
+        
+      <!-- Search field -->
+      <div class="flex md:flex-nowrap flex-wrap justify-start items-end md:justify-start mb-3 mt-3">
+        <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
+          <input v-model="search_term" @keyup="search" name="search" type="text" autocomplete="off" placeholder="Search" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+    </div>
+
     <div class="flex max-w-7xl ml-80 mt-4 justify-center items-center py-6 sm:px-6 lg:px-8">
       <div class="flex justify-between text-gray-600 body-font" v-for="(scam,index) in scams.data" :key="index">
         <div class="bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative ml-4">
@@ -41,12 +51,24 @@
 <script>
 import SideNav from './SideNav.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import _ from 'lodash';
+
 export default {
     components: {
         SideNav, Head, Link
     },
     props: {
       scams: Object,
+    },
+    data () {
+      return {
+        search_term: '',
+      }
+    },
+    methods: {
+      search: _.throttle(function () {
+          this.$inertia.replace(this.route('scams.index',{search_term: this.search_term}))
+      }, 200),
     }
 }
 </script>
