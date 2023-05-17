@@ -4,19 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "8871892b183a423f89bc520342017428",
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "content-hash": "8871892b183a423f89bc520342017428",
-=======
-    "content-hash": "72bd76caf12cb2c93cba92eeb4eed0a3",
->>>>>>> 45b0c05 (Set up google auth and auth screens)
-=======
-    "content-hash": "8871892b183a423f89bc520342017428",
->>>>>>> 4494bb2 (Add users and scams sections for admin)
->>>>>>> 0197452 (Add users and scams sections for admin)
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
