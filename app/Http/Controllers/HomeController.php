@@ -25,8 +25,11 @@ class HomeController extends Controller
             ]);
         } else {
             $user = Auth::user();
+            $scams = Scam::withTrashed()->with('user')->paginate(3);
+            
             return Inertia::render('UserDash', [
                 'user' => $user,
+                'scams' => $scams
             ]);
         }
 

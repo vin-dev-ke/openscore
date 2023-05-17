@@ -15,8 +15,19 @@ class Scam extends Model
         'content',
         'contact',
         'payment',
-        'uploaded_id'
+        'uploaded_id',
+        'user_id'
     ];
 
     protected $dates = [ 'deleted_at' ];
+
+    public function user ()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function file ()
+    {
+        return $this->hasOne(File::class);
+    }
 }

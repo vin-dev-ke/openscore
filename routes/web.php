@@ -48,7 +48,7 @@ Route::middleware([
 
     //Scams
     Route::resource('/scams', App\Http\Controllers\ScamController::class);
-    Route::get('/media', [App\Http\Controllers\FileController::class, 'index']);
+    Route::get('/upload', [App\Http\Controllers\FileController::class, 'upload']);
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
