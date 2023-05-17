@@ -2,19 +2,26 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use App\Models\Scam;
+=======
+>>>>>>> 45b0c05 (Set up google auth and auth screens)
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+<<<<<<< HEAD
 use function PHPSTORM_META\type;
 
+=======
+>>>>>>> 45b0c05 (Set up google auth and auth screens)
 class HomeController extends Controller
 {
     public function index ()
     {
         $role = Auth::user()->getRoleNames()->first();
+<<<<<<< HEAD
         $users_count = User::all()->count();
         $scams_count = Scam::all()->count();
 
@@ -33,5 +40,10 @@ class HomeController extends Controller
             ]);
         }
 
+=======
+        return Inertia::render('Dashboard', [
+            'role'=>$role
+        ]);
+>>>>>>> 45b0c05 (Set up google auth and auth screens)
     }
 }

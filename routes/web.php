@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\GoogleSocialiteController;
+<<<<<<< HEAD
 use App\Models\Scam;
 use App\Models\User;
+=======
+>>>>>>> 45b0c05 (Set up google auth and auth screens)
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +40,7 @@ Route::middleware([
     // Route::get('/dashboard', function () {
     //     return Inertia::render('Dashboard');
     // });
+<<<<<<< HEAD
 
     //Dashboard
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
@@ -52,6 +56,9 @@ Route::middleware([
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+=======
+    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+>>>>>>> 45b0c05 (Set up google auth and auth screens)
 });
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);
