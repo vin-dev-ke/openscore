@@ -15,7 +15,6 @@ class Scam extends Model
         'content',
         'contact',
         'payment',
-<<<<<<< HEAD
         'uploaded_id',
         'user_id'
     ];
@@ -31,10 +30,4 @@ class Scam extends Model
     {
         return $this->hasOne(File::class);
     }
-=======
-        'uploaded_id'
-    ];
-
-    protected $dates = [ 'deleted_at' ];
->>>>>>> 4494bb2 (Add users and scams sections for admin)
 }

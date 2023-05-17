@@ -50,10 +50,17 @@ Route::middleware([
 
     //Scams
     Route::resource('/scams', App\Http\Controllers\ScamController::class);
+<<<<<<< HEAD
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 
+=======
+    Route::get('/upload', [App\Http\Controllers\FileController::class, 'upload']);
+
+    //Search
+    Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+>>>>>>> landing
 });
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);

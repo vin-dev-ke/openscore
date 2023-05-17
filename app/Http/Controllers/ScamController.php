@@ -2,35 +2,23 @@
 
 namespace App\Http\Controllers;
 
-<<<<<<< HEAD
 use App\Models\File;
 use App\Models\Scam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
-=======
-use App\Models\Scam;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
->>>>>>> 4494bb2 (Add users and scams sections for admin)
 
 class ScamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-<<<<<<< HEAD
     public function index(Request $request)
     {
         $scams = Scam::withTrashed()
             ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
             ->paginate(3);
-=======
-    public function index()
-    {
-        $scams = Scam::withTrashed()->paginate(3);
->>>>>>> 4494bb2 (Add users and scams sections for admin)
 
         return Inertia::render('Scam', [
             'scams' => $scams
@@ -50,7 +38,6 @@ class ScamController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
         $validated = $request->validate([
             'content' => ['required','string','max:255'],
             'contact' => ['required','string','max:255'],
@@ -81,9 +68,6 @@ class ScamController extends Controller
           }
 
         return to_route('dashboard');
-=======
-        //
->>>>>>> 4494bb2 (Add users and scams sections for admin)
     }
 
     /**
