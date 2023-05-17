@@ -65,4 +65,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function scams ()
+    {
+        return $this->hasMany(Scam::class);
+    }
 }

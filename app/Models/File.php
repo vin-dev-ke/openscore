@@ -13,4 +13,9 @@ class File extends Model
         'name',
         'path'
     ];
+
+    public function scam()
+    {
+        return $this->belongsTo(Scam::class);
+    }
 }

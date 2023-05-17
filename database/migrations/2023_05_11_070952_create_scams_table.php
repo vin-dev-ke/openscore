@@ -13,11 +13,20 @@ return new class extends Migration
     {
         Schema::create('scams', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
+            $table->text('content');
             $table->string('contact');
             $table->string('payment')->nullable();
             $table->unsignedBigInteger('file_id')->nullable();
-            $table->foreign('file_id')->references('id')->on('files')->onDelete('set null');
+            $table->foreign('file_id')
+                ->references('id')
+                ->on('files')
+                ->onDelete('set null');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

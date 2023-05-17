@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\File;
 use App\Models\Scam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class ScamController extends Controller
 {
@@ -35,7 +38,36 @@ class ScamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'content' => ['required','string','max:255'],
+            'contact' => ['required','string','max:255'],
+            'payment' => ['nullable','string','max:255'],
+            'file_id' => ['nullable', 'file'],
+          ]);
+  
+          $user = Auth::user();
+
+          $newScam = new Scam();
+          $newScam->contact = $validated['contact'];
+          $newScam->content = $validated['content'];
+          $newScam->payment = $validated['payment'];
+          $newScam->user_id = $user->id;
+          $newScam->save();
+          
+          // Save file records if a file is uploaded
+          if ($request->hasFile('file_id')) {
+              $file = $validated['file_id'];
+              $filePath = $file->store('scam_files', 'public');
+              $fileName = $file->getClientOriginalName();
+          
+              $newFile = new File();
+              $newFile->name = $fileName;
+              $newFile->path = $filePath;
+              $newFile->scam_id = $newScam->id; // Assign the scam_id
+              $newFile->save();
+          }
+
+        return to_route('dashboard');
     }
 
     /**
