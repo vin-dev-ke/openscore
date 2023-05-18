@@ -26,6 +26,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'usersCount'=> User::all()->count(),
         'scamsCount'=> Scam::all()->count(),
+        'filesCount'=>count(Illuminate\Support\Facades\File::allFiles(storage_path('app/public/scam_files'))),
     ]);
 });
 

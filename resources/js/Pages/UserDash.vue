@@ -1,11 +1,22 @@
 <template>
     <Head title="Dashboard" />
 
-    <!-- Forum -->
     <!-- Header -->
-    <header class="bg-orange-600 text-white">
-        <h1 class="font-bold text-green-500 text-3xl uppercase ml-2 mb-0">Open<span class="text-black">score</span></h1>
-        <span class="ml-3 text-white text-2xl font-semibold flex items-center justify-center uppercase">Scam Reports Forum</span>
+    <header class="bg-orange-600 py-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <Link href="/">
+        <div class="flex items-center">
+          <h1 class="font-bold text-green-500 text-3xl uppercase ml-2 mb-0">Open<span class="text-black">Score</span></h1>
+        </div>
+      </Link>
+      <div class="text-white">
+        <h2 class="text-lg font-mono text-3xl uppercase">Scam Reports Forum</h2>
+      </div>
+      <nav class="space-x-4">
+        <Link :href="route('profile.show')" class="text-black hover:text-white">Profile Settings</Link>
+        <Link :href="route('logout')" method="post" as="button" class="text-black hover:text-white">Sign out</Link>
+      </nav>
+    </div>
     </header>
 
     <!-- Forum Content -->
@@ -28,7 +39,7 @@
           <h1 class="mb-2 font-semibold text-2xl ml-2">Make a Quick Scam Report</h1>
           
           <div class="row-span-1 -mt-26">
-            <div class="bg-white shadow-md rounded px-8 pt-2 pb-8 mb-4 flex flex-col">
+            <div class="bg-green-200 shadow-lg rounded px-8 pt-2 pb-8 mb-4 flex flex-col">
             
               <form @submit.prevent="submit" enctype="multipart/form-data">
                 <div class="-mx-3 md:flex mb-6">
@@ -98,39 +109,58 @@
       <!-- Second Column -->
       <div>
         <h1 class="font-semibold text-2xl leading-5 uppercase text-gray-500">Recent scam reports</h1>
-        <div v-for="(scam,index) in scams.data" :key="index" class="py-8 flex flex-wrap md:flex-nowrap">
-          <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-            <span class="font-semibold title-font text-gray-700 uppercase">{{ scam.user.name }}</span>
-            <span class="mt-1 text-gray-500 text-sm">{{ formatDate(scam.created_at) }}</span>
-          </div>
-          <div class="md:flex-grow">
-            <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{ scam.contact }}</h2>
-            <p class="leading-relaxed">{{ scam.content }}</p>
-            
-            <!-- Payment method & Attachments -->
-            <div class="flex items-center mt-3">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-              </svg> 
-              <span class="ml-2">{{ scam.payment }}</span>
-            </div>
 
-            <div class="flex items-center ml-40 mt-3">
-              <!-- Comment icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-              </svg>
-  
-              <!-- Share icon -->
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-              </svg>
-            </div>
+      <!-- Search field -->
+      <div class="flex md:flex-nowrap flex-wrap justify-start items-end md:justify-start mb-3 mt-3">
+        <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
+          <input v-model="search_term" @keyup="search" name="search_term" type="text" autocomplete="off" placeholder="Search" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+      </div>
+
+      <!-- Scams List -->
+      <div v-for="(scam,index) in scams.data" :key="index" class="py-4 flex flex-wrap md:flex-nowrap">
+        <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+          <span class="font-semibold title-font text-gray-700 uppercase">{{ scam.user.name }}</span>
+          <span class="mt-1 text-gray-500 text-sm">{{ formatDate(scam.created_at) }}</span>
+        </div>
+        <div class="md:flex-grow">
+          <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{ scam.contact }}</h2>
+          <p class="leading-relaxed">{{ scam.content }}</p>
+          
+          <!-- Payment method icon -->
+          <div class="flex items-center mt-3">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+            </svg> 
+            <span class="ml-2">{{ scam.payment }}</span>
+          </div>
+
+          <!-- File attachment icon -->
+          <div class="flex items-center mt-2">
+            <Link href="">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                </svg>
+            </Link>
+            <span class="ml-2"></span>
+          </div>
+
+          <div class="flex items-center ml-40 mt-3">
+            <!-- Comment icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>
+
+            <!-- Share icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
+            </svg>
           </div>
         </div>
+      </div>
 
         <!-- Paginator -->
-      <div class="order-last mt-4 p-2">
+      <div class="order-last mt-4 p-2 flex items-center justify-center">
         <Link 
           v-for="(link,key) in scams.links" 
           :key="key"
@@ -150,6 +180,7 @@ import { Head } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
 import moment from 'moment';
 import { Link } from '@inertiajs/vue3';
+import _ from 'lodash';
 
 export default {
     components: {
@@ -168,10 +199,17 @@ export default {
             payment: '',
             file_id: null,
         });
-
         return { form };
     },
+    data() {
+      return {
+        search_term: '',
+      };
+    },
     methods:{
+      search: _.throttle(function () {
+          this.$inertia.get(this.route('dashboard',{search_term: this.search_term}))
+      }, 200),
       handleFileUpload (event) {
         this.form.file_id = event.target.files[0];
       },

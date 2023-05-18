@@ -12,7 +12,7 @@ use function PHPSTORM_META\type;
 
 class HomeController extends Controller
 {
-    public function index ()
+    public function index (Request $request)
     {
         $role = Auth::user()->getRoleNames()->first();
         $users_count = User::all()->count();
@@ -25,7 +25,10 @@ class HomeController extends Controller
             ]);
         } else {
             $user = Auth::user();
-            $scams = Scam::withTrashed()->with('user')->paginate(3);
+            $scams = Scam::withTrashed()
+                    ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
+                    ->with('user')
+                    ->paginate(3);
             
             return Inertia::render('UserDash', [
                 'user' => $user,
