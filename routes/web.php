@@ -26,6 +26,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'usersCount'=> User::all()->count(),
         'scamsCount'=> Scam::all()->count(),
+        'filesCount'=>count(Illuminate\Support\Facades\File::allFiles(storage_path('/app/public/scam_files'))),
     ]);
 });
 
@@ -52,6 +53,10 @@ Route::middleware([
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+
+    //Comments
+    Route::get('scams/{postId}/comments', [App\Http\Controllers\CommentController::class, 'index'])->name('comments');
+    Route::post('scams/{postId}/comments', [App\Http\Controllers\CommentController::class, 'store']);
 });
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);

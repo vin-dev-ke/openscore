@@ -13,12 +13,14 @@
       </div>
     </div>
 
-    <div class="flex max-w-7xl ml-80 mt-4 justify-center items-center py-6 sm:px-6 lg:px-8">
-      <div class="flex justify-between text-gray-600 body-font" v-for="(scam,index) in scams.data" :key="index">
+    <div class="flex max-w-7xl ml-80 mt-4 justify-between py-6 sm:px-6 lg:px-8">
+      <div class="text-gray-600 body-font h-auto overflow-x-auto" v-for="(scam,index) in scams.data" :key="index">
         <div class="bg-gray-100 bg-opacity-75 px-8 pt-16 pb-24 rounded-lg overflow-hidden text-center relative ml-4">
-            <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">{{ scam.title }}</h1>
-            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">By Test user</h2>
-                <p class="leading-relaxed mb-3">{{ scam.content }} </p>
+            <h1 class="title-font sm:text-2xl text-xl font-medium text-gray-900 mb-3">{{ scam.contact }}</h1>
+            <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">By {{ scam.user.name }}</h2>
+            <div class="mx-auto">
+              <p class="leading-relaxed mb-3">{{ scam.content }} </p>
+            </div>    
           <div class="text-center mt-2 leading-none flex justify-center absolute bottom-0 left-0 w-full py-4">
             <span class="text-gray-400 mr-3 inline-flex items-center leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
               <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -35,6 +37,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Paginator -->
     <div class="order-last mt-4 p-2 flex max-w-7xl ml-80 mt-4 justify-center items-center py-6 sm:px-6 lg:px-8">
      <Link 
