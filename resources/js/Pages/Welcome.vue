@@ -281,5 +281,6 @@ defineProps({
     phpVersion: String,
     usersCount: Number,
     scamsCount: Number,
+    filesCount: Number,
 });
 </script>

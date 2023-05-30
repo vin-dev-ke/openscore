@@ -25,6 +25,7 @@
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "vue": "^3.2.36",
-        "vue-chartjs": "^5.2.0"
+        "vue-chartjs": "^5.2.0",
+        "vue-share-it": "^1.1.7"
     }
 }

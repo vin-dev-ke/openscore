@@ -28,11 +28,13 @@ class HomeController extends Controller
             $scams = Scam::withTrashed()
                     ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
                     ->with('user')
+                    ->orderBy('created_at', 'desc')
                     ->paginate(3);
-            
+            $myScams = $user->scams->count();
             return Inertia::render('UserDash', [
                 'user' => $user,
-                'scams' => $scams
+                'scams' => $scams,
+                'myScams' => $myScams
             ]);
         }
 

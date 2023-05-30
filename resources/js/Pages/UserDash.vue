@@ -34,6 +34,9 @@
               <span class="ml-2 inline-flex text-xs px-3 bg-green-200 text-gray-800 rounded-full">
                     {{ user.deleted_at ? 'Deactivated' : 'Active user' }}
               </span>
+              <span class="ml-2 inline-flex text-xs px-3 bg-gray-200 text-gray-800 rounded-full">
+                  <span class="font-bold mr-1">{{ myScams }}</span> posted scams
+              </span>
           </div>
   
           <h1 class="mb-2 font-semibold text-2xl ml-2">Make a Quick Scam Report</h1>
@@ -113,12 +116,12 @@
       <!-- Search field -->
       <div class="flex md:flex-nowrap flex-wrap justify-start items-end md:justify-start mb-3 mt-3">
         <div class="relative sm:w-64 w-40 sm:mr-4 mr-2">
-          <input v-model="search_term" @keyup="search" name="search_term" type="text" autocomplete="off" placeholder="Search" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <input v-model="search_term" @keyup="search" name="search_term" type="text" autocomplete="off" placeholder="Search by scammer's phone/email" class="w-80 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:ring-2 focus:bg-transparent focus:ring-indigo-200 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
         </div>
       </div>
 
       <!-- Scams List -->
-      <div v-for="(scam,index) in scams.data" :key="index" class="py-4 flex flex-wrap md:flex-nowrap">
+      <div v-for="scam in scams.data" :key="scam.id" class="py-4 flex flex-wrap md:flex-nowrap">
         <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
           <span class="font-semibold title-font text-gray-700 uppercase">{{ scam.user.name }}</span>
           <span class="mt-1 text-gray-500 text-sm">{{ formatDate(scam.created_at) }}</span>
@@ -147,9 +150,11 @@
 
           <div class="flex items-center ml-40 mt-3">
             <!-- Comment icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-            </svg>
+            <button @click="toggleComments(scam.id)" class="focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+              </svg>
+            </button>
 
             <!-- Share icon -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
@@ -158,6 +163,39 @@
           </div>
         </div>
       </div>
+
+      <!-- Comments Modal -->
+      <div v-if="showCommentBox && selectedPostId !== null" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-white p-4 rounded-lg w-96 relative">
+          
+           <!--Modal close button -->
+          <button class="absolute top-0 right-0 -mt-3 -mr-3 text-black text-3xl hover:text-3xl focus:outline-none bg-transparent" @click="closeModal">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 transition-transform transform-gpu hover:scale-125">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+
+          <!-- Comment box form -->
+          <form @submit.prevent="sendComment(selectedPostId)">
+            <textarea v-model="newComment" cols="20" rows="3" class="w-full border border-gray-300 p-2 rounded-lg mb-2"></textarea>
+            <button type="submit" class="bg-orange-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Comment</button>
+          </form>
+
+          <!-- Display existing comments or "No comments" message -->
+          <div v-if="comments.length > 0">
+            <div v-for="comment in comments" :key="comment.id" class="border border-gray-300 p-2 rounded-lg mb-2">
+              {{ comment.content }}
+            </div>
+          </div>
+          <div v-else>
+            <span class="text-gray-400 text-md"> No comments for this post</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty div when showCommentBox is false and selectedPostId is null -->
+      <div v-else></div>
+
 
         <!-- Paginator -->
       <div class="order-last mt-4 p-2 flex items-center justify-center">
@@ -191,6 +229,7 @@ export default {
       errors: Object,
       scams: Object,
       scamPost: Object,
+      myScams: Number,
     },
     setup() {
         const form = useForm({
@@ -204,12 +243,22 @@ export default {
     data() {
       return {
         search_term: '',
+        showCommentBox: true,
+        comments: [],
+        selectedPostId: null,
+        postId: null,
+        newComment: '',
       };
     },
     methods:{
       search: _.throttle(function () {
           this.$inertia.get(this.route('dashboard',{search_term: this.search_term}))
       }, 200),
+      closeModal() {
+        this.showCommentBox = false;
+        this.newComment = ''; // Clear the form input
+        this.$inertia.get(this.route('dashboard'));
+      },
       handleFileUpload (event) {
         this.form.file_id = event.target.files[0];
       },
@@ -231,6 +280,41 @@ export default {
       formatDate(date) {
         return moment(date).fromNow();
       },
+      toggleComments(postId) {
+        if (this.selectedPostId === postId) {
+        // If comment box is already open for the selected post, close it
+          this.showCommentBox = false;
+          this.selectedPostId = null;
+        } else {
+        // Otherwise, load comments for the selected post
+          this.selectedPostId = postId;
+          this.showCommentBox = true;
+          this.loadComments(postId);
+        }
+      },
+      loadComments(postId) {
+        if (this.selectedPostId === postId) {
+          this.$inertia.visit(`scams/${postId}/comments`, {
+            preserveState: true, 
+            preserveScroll: true, 
+            only: ['comments'], 
+          });
+        } else {
+          this.comments = [];
+        }
+      },
+      sendComment(postId) {
+        if (this.selectedPostId === postId) {
+          this.$inertia.post(`/scams/${postId}/comments`, {
+            content: this.newComment,
+            scam_id: postId,
+          });
+          this.newComment = '';
+          this.loadComments(postId); // Call the loadComments method to refresh the comments
+        } else {
+          console.log('Not the right post!');
+        }
+      }
     }
 }
 </script>
