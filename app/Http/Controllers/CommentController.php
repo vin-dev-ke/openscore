@@ -9,22 +9,23 @@ use Inertia\Inertia;
 
 class CommentController extends Controller
 {  
-    public function index (Scam $postId)
+    public function index (Scam $id)
     {
-        $comments = $postId->comments;
-        // dd($comments);
+        $post = Scam::find($id)->first();
+        $comments = $post->comments;
+        
         return Inertia::render('UserDash', [
             'comments' => $comments,
         ]);
     }
 
-    public function store (Request $request, int $postId)
+    public function store (Request $request, Scam $id)
     {
         $validatedData = $request->validate([
             'content' => 'required'
         ]);
 
-        $scam = Scam::findOrFail($postId);
+        $scam = Scam::find($id)->first();
         
         $comment = new Comment();
         $comment->content = $validatedData['content'];

@@ -43,21 +43,27 @@ Route::middleware([
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
     //Users
-    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-    Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
-    Route::get('users/restore/{id}', [App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('users/restore/{id}', [App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
+    });
 
     //Scams
     Route::resource('/scams', App\Http\Controllers\ScamController::class);
+
+    //Comments
+    Route::get('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'index'])->name('comments');
+    Route::post('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'store']);
+    
+    //File upload
     Route::get('/upload', [App\Http\Controllers\FileController::class, 'upload']);
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 
-    //Comments
-    Route::get('scams/{postId}/comments', [App\Http\Controllers\CommentController::class, 'index'])->name('comments');
-    Route::post('scams/{postId}/comments', [App\Http\Controllers\CommentController::class, 'store']);
 });
+
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);
 Route::get('callback/google', [GoogleSocialiteController::class, 'handleGoogleCallback']);
