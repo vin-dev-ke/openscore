@@ -6,6 +6,7 @@
     <div class="container mx-auto flex items-center justify-between">
       <Link href="/">
         <div class="flex items-center">
+          <img src="/OS.png" alt="logo" class="h-16 w-16 object-contain"/>
           <h1 class="font-bold text-green-500 text-3xl uppercase ml-2 mb-0">Open<span class="text-black">Score</span></h1>
         </div>
       </Link>
@@ -43,14 +44,24 @@
           
           <div class="row-span-1 -mt-26">
             <div class="bg-green-200 shadow-lg rounded px-8 pt-2 pb-8 mb-4 flex flex-col">
-            
+              
+              <!-- Display success message -->
+              <div v-if="isFormSubmitted" class="bg-green-500 text-white px-4 py-2 rounded">
+                <p>{{ successMessage }}</p>
+              </div>
+              
+              <!-- Display error message if there's an error -->
+              <div v-if="errorMessage" class="bg-red-500 text-white px-4 py-2 rounded">
+                <p>{{ errorMessage }}</p>
+              </div>
+
               <form @submit.prevent="submit" enctype="multipart/form-data">
                 <div class="-mx-3 md:flex mb-6">
   
                   <!-- Contact -->
                   <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-contact">
-                      Phone/Email
+                      Phone/Email used by scammer
                     </label><span class="text-red-500">*</span>
                     <input v-model="form.contact" name="contact" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-contact" type="text" placeholder="scammer's contact" autocomplete="OFF" required>
                     <div v-if="form.errors.contact" v-text="form.errors.contact" class="text-red-500 text-sm mt-2" required></div>      
@@ -78,12 +89,22 @@
                   </div>
                 </div>
   
-                <!-- Upload file -->
                 <div class="-mx-3 md:flex mb-2">
-                    <div class="mb-3">
+                       
+                  <!-- Country -->
+                  <div class="mb-3 px-3">
+                    <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-country">
+                      Country where scam happened
+                    </label>
+                    <input v-model="form.country" name="country" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-2 px-2" id="grid-country" type="text" placeholder="e.g Kenya" autocomplete="OFF">
+                    <div v-if="form.errors.country" v-text="form.errors.country" class="text-red-500 text-sm mt-2" required></div>      
+                  </div>
+
+                    <!-- Upload file -->                  
+                  <div class="mb-3 mt-2">
                     <label
                     for="formFile"
-                    class="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
+                    class="mb-4 inline-block text-neutral-700 dark:text-neutral-200"
                     >Upload supporting document:</label>
                     <input
                     @change="handleFileUpload"
@@ -91,7 +112,8 @@
                     type="file"
                     name="file_id"
                     id="formFile" />
-                    </div>
+                  </div>
+                  
                 </div>
   
                 <!-- Save/Cancel buttons -->
@@ -127,7 +149,9 @@
           <span class="mt-1 text-gray-500 text-sm">{{ formatDate(scam.created_at) }}</span>
         </div>
         <div class="md:flex-grow">
-          <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{ scam.contact }}</h2>
+          <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{ hideFirstThree(scam.contact) }}
+            <span class="inline-flex text-xs px-3 bg-yellow-200 text-gray-800 rounded-full"> {{ scam.country }}</span>
+          </h2>
           <p class="leading-relaxed">{{ scam.content }}</p>
           
           <!-- Payment method icon -->
@@ -148,7 +172,7 @@
             <span class="ml-2"></span>
           </div>
 
-          <div class="flex items-center ml-40 mt-3">
+          <div class="flex items-center ml-60 mt-3">
             <!-- Comment icon -->
             <button @click="toggleComments(scam.id)" class="focus:outline-none">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -156,10 +180,17 @@
               </svg>
             </button>
 
+            <!-- Delete icon -->
+            <button v-if="scam.user_id === user.id" @click="deletePost(scam.id)" class="focus:outline-none ml-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+            </button>
+
             <!-- Share icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-            </svg>
+            </svg> -->
           </div>
         </div>
       </div>
@@ -182,14 +213,14 @@
           </form>
 
           <!-- Display existing comments or "No comments" message -->
-          <div v-if="comments.length > 0">
-            <div v-for="comment in comments" :key="comment.id" class="border border-gray-300 p-2 rounded-lg mb-2">
-              {{ comment.content }}
-            </div>
+        <div v-if="comments.length > 0">
+          <div v-for="comment in comments" :key="comment.id" class="border border-gray-300 p-2 rounded-lg mb-2">
+            {{ comment.content }}
           </div>
-          <div v-else>
-            <span class="text-gray-400 text-md"> No comments for this post</span>
-          </div>
+        </div>
+        <div v-else>
+          <span class="text-gray-400 text-md">No comments for this post</span>
+        </div>
         </div>
       </div>
 
@@ -236,6 +267,7 @@ export default {
             contact: '',
             content: '',
             payment: '',
+            country: '',
             file_id: null,
         });
         return { form };
@@ -248,12 +280,18 @@ export default {
         selectedPostId: null,
         postId: null,
         newComment: '',
+        successMessage: '',
+        errorMessage: '',
+        isFormSubmitted: false,
       };
     },
     methods:{
       search: _.throttle(function () {
           this.$inertia.get(this.route('dashboard',{search_term: this.search_term}))
       }, 200),
+      hideFirstThree(contact) {
+        return '*'.repeat(3) + contact.substring(3);
+      },
       closeModal() {
         this.showCommentBox = false;
         this.newComment = ''; // Clear the form input
@@ -268,17 +306,52 @@ export default {
           formData.append('contact', this.form.contact);
           formData.append('content', this.form.content);
           formData.append('payment', this.form.payment);
+          formData.append('country', this.form.country);
           formData.append('file_id', this.form.file_id);
 
         await this.form.post('/scams', formData);
 
-        // Form submission successful, do any necessary redirects or show success message
+          // Clear form fields
+        this.form = {
+          contact: '',
+          content: '',
+          payment: '',
+          country: '',
+          file_id: null,
+        };
+
+        // Set success message and flag
+        this.successMessage = 'Form submitted successfully.';
+        this.isFormSubmitted = true;
+
+        // Clear success message after 3 seconds
+        setTimeout(() => {
+          this.successMessage = '';
+          this.isFormSubmitted = false;
+        }, 3000);
+
       } catch (error) {
         // Handle any errors during form submission
+        this.errorMessage = 'An error occurred while submitting the form. Please try again!';
       }      
       },
       formatDate(date) {
         return moment(date).fromNow();
+      },
+      deletePost(postId){
+        const confirmed = confirm('Are you sure you want to delete the resource?');
+        
+        if (confirmed) {
+          this.$inertia.delete(this.route('scams.destroy', {scam : postId }))
+          .then(() => {
+            // Handle successful deletion
+            alert('Scam deleted successfully!');
+          })
+          .catch((error) => {
+            // Handle error during deletion
+            alert('An error occurred while deleting the post', error);
+          });
+        }
       },
       toggleComments(postId) {
         if (this.selectedPostId === postId) {
@@ -292,15 +365,17 @@ export default {
           this.loadComments(postId);
         }
       },
-      loadComments(postId) {
-        if (this.selectedPostId === postId) {
-          this.$inertia.visit(`scams/${postId}/comments`, {
-            preserveState: true, 
-            preserveScroll: true, 
-            only: ['comments'], 
-          });
-        } else {
-          this.comments = [];
+      async loadComments(postId) {
+        try {
+          const response = await this.$inertia.visit(this.route('comments', {id : postId }),{
+              preserveState: true, 
+              preserveScroll: true, 
+              only: ['comments'], 
+            });
+          console.log(response);
+          this.comments = response.data.comments;
+        } catch (error) {
+          console.error('Error loading comments:', error);
         }
       },
       sendComment(postId) {
@@ -310,7 +385,8 @@ export default {
             scam_id: postId,
           });
           this.newComment = '';
-          this.loadComments(postId); // Call the loadComments method to refresh the comments
+          // Call the loadComments method to refresh the comments
+          this.loadComments(postId); 
         } else {
           console.log('Not the right post!');
         }

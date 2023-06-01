@@ -44,6 +44,7 @@ class ScamController extends Controller
             'content' => ['required','string','max:255'],
             'contact' => ['required','string','max:255'],
             'payment' => ['nullable','string','max:255'],
+            'country' => ['nullable','string','max:255'],
             'file_id' => ['nullable', 'file'],
           ]);
   
@@ -53,6 +54,7 @@ class ScamController extends Controller
           $newScam->contact = $validated['contact'];
           $newScam->content = $validated['content'];
           $newScam->payment = $validated['payment'];
+          $newScam->country = $validated['country'];
           $newScam->user_id = $user->id;
           $newScam->save();
           
@@ -99,8 +101,12 @@ class ScamController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Scam $scam)
     {
-        //
+        //Delete scam
+        $scam->delete();
+
+        return to_route('dashboard');
+
     }
 }
