@@ -6,7 +6,7 @@
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap p-5 flex-col md:flex-row items-center">
                 <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
                   <!-- Logo -->
-                  <img src="/OS.png" alt="logo" class="h-28 w-32"/>
+                  <img src="/OS.png" alt="logo" class="h-12 w-12"/>
 
                   <span class="ml-2 text-2xl uppercase text-green-500 font-bold">
                     <span class="text-black">Open</span>Score
@@ -26,11 +26,11 @@
 
                     <template v-else>
                         <Link :href="route('login')"
-                            class="font-bold sm:mb-2 md:mb-2 px-5 py-3 border-green-500 bg-white text-green-500 border-2 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                            class="font-bold sm:mb-2 md:mb-2 px-5 py-3 border-green-500 bg-white text-black border-2 hover:text-gray-900 dark:text-green-400 dark:hover:text-green-500 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
                         Log in</Link>
 
                         <Link v-if="canRegister" :href="route('register')"
-                            class="text-black ml-4 text-white bg-green-500 px-5 py-3 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                            class="ml-4 text-white bg-green-500 px-5 py-3 hover:text-gray-900 dark:text-white dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
                         Register</Link>
                     </template>
                 </div>

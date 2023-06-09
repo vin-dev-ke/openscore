@@ -35,9 +35,6 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    // Route::get('/dashboard', function () {
-    //     return Inertia::render('Dashboard');
-    // });
 
     //Dashboard
     Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
@@ -53,7 +50,7 @@ Route::middleware([
     Route::resource('/scams', App\Http\Controllers\ScamController::class);
 
     //Comments
-    Route::get('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'index'])->name('comments');
+    Route::get('comments/{id}', [App\Http\Controllers\CommentController::class, 'show'])->name('comments');
     Route::post('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'store']);
     
     //File upload

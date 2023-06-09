@@ -11,11 +11,17 @@ class Comment extends Model
 
     protected $fillable = [
         'content',
-        'scam_id'
+        'scam_id',
+        'user_id'
     ];
 
     public function scam ()
     {
         return $this->belongsTo(Scam::class);
+    }
+
+    public function user () 
+    {
+        return $this->belongsTo(User::class);
     }
 }
