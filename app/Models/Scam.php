@@ -16,7 +16,7 @@ class Scam extends Model
         'contact',
         'payment',
         'country',
-        'uploaded_id',
+        'file',
         'user_id'
     ];
 

@@ -52,9 +52,10 @@ Route::middleware([
     //Comments
     Route::get('comments/{id}', [App\Http\Controllers\CommentController::class, 'show'])->name('comments');
     Route::post('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'store']);
-    
+    Route::delete('comments/{id}', [App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy');
+
     //File upload
-    Route::get('/upload', [App\Http\Controllers\FileController::class, 'upload']);
+    Route::post('/upload', [App\Http\Controllers\FileController::class, 'upload']);
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
