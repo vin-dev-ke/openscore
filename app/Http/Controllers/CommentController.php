@@ -34,6 +34,10 @@ class CommentController extends Controller
         $comment->user_id = Auth::id();
         $comment->save();
 
+
+        // Associate the comment with the scam relationship
+        $scam->comments()->save($comment);
+
         return redirect()->back();
     }
 
