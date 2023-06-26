@@ -56,15 +56,20 @@ class ScamController extends Controller
         }
   
         $user = Auth::user();
-        $file = $request->file('file');
-        $file->store('scam_files', 'public');
-        $file_name = $file->getClientOriginalName();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $file->store('scam_files', 'public');
+            $file_name = $file->getClientOriginalName();
+        } else {
+            // Set the file name to null if no file is uploaded
+            $file_name = null; 
+        }
 
         Scam::create([
-            'contact' => $validated['contact'],
-            'content' => $validated['content'],
-            'payment' => $validated['payment'],
-            'country' => $validated['country'],
+            'contact' => $validator->validated()['contact'],
+            'content' => $validator->validated()['content'],
+            'payment' => $validator->validated()['payment'],
+            'country' => $validator->validated()['country'],
             'user_id' => $user->id,
             'file' => $file_name,
         ]);

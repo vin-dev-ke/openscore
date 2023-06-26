@@ -54,7 +54,7 @@
                   <p>{{ errorMessage }}</p>
                 </div>
   
-                <form @submit.prevent="submit">
+                <form @submit.prevent="submitScam">
                   <div class="-mx-3 md:flex mb-6">
     
                     <!-- Contact -->
@@ -63,7 +63,7 @@
                         Phone/Email used by scammer
                       </label><span class="text-red-500">*</span>
                       <input v-model="form.contact" name="contact" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-contact" type="text" placeholder="scammer's contact" autocomplete="OFF" required>
-                      <div v-if="form.errors.contact" v-text="form.errors.contact" class="text-red-500 text-sm mt-2" required></div>      
+                      <div v-if="errors.contact" v-text="form.errors.contact" class="text-red-500 text-sm mt-2" required></div>      
                     </div>
     
                     <!-- Payment mode used -->
@@ -72,7 +72,7 @@
                         Payment mode used
                       </label>
                       <input v-model="form.payment" name="payment" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-payment" type="text" placeholder="e.g PayPal" autocomplete="OFF">
-                      <div v-if="form.errors.payment" v-text="form.errors.payment" class="text-red-500 text-sm mt-2" required></div>      
+                      <div v-if="errors.payment" v-text="form.errors.payment" class="text-red-500 text-sm mt-2" required></div>      
                     </div>
                   </div>
     
@@ -84,7 +84,7 @@
                       </label><span class="text-red-500">*</span>
                       <textarea v-model="form.content" name="content" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="grid-content" type="text" rows="3" required></textarea>
                       <p class="text-grey-dark text-xs italic">Tell us what happened in brief</p>
-                      <div v-if="form.errors.content" v-text="form.errors.content" class="text-red-500 text-sm mt-2" required></div>      
+                      <div v-if="errors.content" v-text="form.errors.content" class="text-red-500 text-sm mt-2" required></div>      
                     </div>
                   </div>
     
@@ -96,7 +96,7 @@
                         Country where scam happened
                       </label>
                       <input v-model="form.country" name="country" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-2 px-2" id="grid-country" type="text" placeholder="e.g Kenya" autocomplete="OFF">
-                      <div v-if="form.errors.country" v-text="form.errors.country" class="text-red-500 text-sm mt-2" required></div>      
+                      <div v-if="errors.country" v-text="form.errors.country" class="text-red-500 text-sm mt-2" required></div>      
                     </div>
   
                       <!-- Upload file -->                  
@@ -278,7 +278,6 @@ export default {
             payment: '',
             country: '',
             file: null,
-            erros: {},
         });
         return { form };
     },
@@ -319,7 +318,7 @@ export default {
       formatDate(date) {
         return moment(date).fromNow();
       },
-      async submit () {
+      async submitScam () {
         try {
           const formData = new FormData();
           formData.append('contact', this.form.contact);
@@ -328,7 +327,7 @@ export default {
           formData.append('country', this.form.country);
           formData.append('file', this.form.file);
 
-        await this.$inertia.post('/scams', formData);
+        await this.$inertia.post(route('scams.store'), formData);
 
           // Clear form fields
         this.form = {
@@ -415,12 +414,12 @@ export default {
             scam_id: postId,
             user_id: this.user.id,
           })
-          .then(() => {
-            // console.log(response);
-            // //update comment data with the new comment
-            // this.comments = response.data.comments;
-            // //update the new comment field
-            // this.newComment = '';
+          .then((response) => {
+            console.log(response);
+            //update comment data with the new comment
+            this.comments = response.data.comments;
+            //update the new comment field
+            this.newComment = '';
           })
           .catch((error) => {
             console.log(error);
