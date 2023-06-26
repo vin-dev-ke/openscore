@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ScamController extends Controller
 {
@@ -18,6 +20,7 @@ class ScamController extends Controller
     {
         $scams = Scam::withTrashed()
             ->with('user')
+            ->with('file')
             ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
             ->orderBy('created_at', 'desc')
             ->paginate(3);
@@ -40,38 +43,33 @@ class ScamController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'content' => ['required','string','max:255'],
-            'contact' => ['required','string','max:255'],
-            'payment' => ['nullable','string','max:255'],
-            'country' => ['nullable','string','max:255'],
-            'file_id' => ['nullable', 'file'],
-          ]);
+        $validator = Validator::make($request->all(), [
+            'content' => ['required', 'string', 'max:255'],
+            'contact' => ['required', 'string', 'max:255'],
+            'payment' => ['nullable', 'string', 'max:255'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'file' => ['nullable'],
+        ]);
+    
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
   
-          $user = Auth::user();
+        $user = Auth::user();
+        $file = $request->file('file');
+        $file->store('scam_files', 'public');
+        $file_name = $file->getClientOriginalName();
 
-          $newScam = new Scam();
-          $newScam->contact = $validated['contact'];
-          $newScam->content = $validated['content'];
-          $newScam->payment = $validated['payment'];
-          $newScam->country = $validated['country'];
-          $newScam->user_id = $user->id;
-          $newScam->save();
-          
-          // Save file records if a file is uploaded
-          if ($request->hasFile('file_id')) {
-              $file = $validated['file_id'];
-              $filePath = $file->store('scam_files', 'public');
-              $fileName = $file->getClientOriginalName();
-          
-              $newFile = new File();
-              $newFile->name = $fileName;
-              $newFile->path = $filePath;
-              $newFile->scam_id = $newScam->id; // Assign the scam_id
-              $newFile->save();
-          }
+        Scam::create([
+            'contact' => $validated['contact'],
+            'content' => $validated['content'],
+            'payment' => $validated['payment'],
+            'country' => $validated['country'],
+            'user_id' => $user->id,
+            'file' => $file_name,
+        ]);
 
-        return to_route('dashboard');
+        return redirect()->route('dashboard');
     }
 
     /**

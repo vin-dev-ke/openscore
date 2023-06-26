@@ -54,7 +54,7 @@
                   <p>{{ errorMessage }}</p>
                 </div>
   
-                <form @submit.prevent="submit" enctype="multipart/form-data">
+                <form @submit.prevent="submit">
                   <div class="-mx-3 md:flex mb-6">
     
                     <!-- Contact -->
@@ -101,18 +101,9 @@
   
                       <!-- Upload file -->                  
                     <div class="mb-3">
-                      <label
-                      for="formFile"
-                      class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" 
-                      >Upload supporting document:</label>
-                      <input
-                      @change="handleFileUpload"
-                      class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-                      type="file"
-                      name="file_id"
-                      id="formFile" />
+                      <label class="block mb-2 text-sm font-bold text-gray-900 dark:text-black" for="default_size">Upload single supporting document</label>
+                      <input @input="form.file = $event.target.files[0]" type="file" name="file" class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size"/>
                     </div>
-                    
                   </div>
     
                   <!-- Save/Cancel buttons -->
@@ -170,13 +161,11 @@
                   </div>
       
                   <!-- File attachment icon -->
-                  <div class="flex items-center mt-2">
-                    <Link href="">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-                        </svg>
-                    </Link>
-                    <span class="ml-2"></span>
+                  <div v-if="scam.file" class="flex items-center mt-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                      </svg>
+                    <span class="ml-2">{{ scam.file }}</span>
                   </div>
       
                   <div class="flex items-center ml-60 mt-3">
@@ -220,12 +209,20 @@
                     <!-- Display existing comments or "No comments" message -->
                     <div v-if="comments && comments.length > 0">
                       <div class="grid grid-cols-3 gap-4">
-                        <div v-for="comment in comments" :key="comment.id" class="border border-gray-300 p-2 rounded-lg mb-2">
+                        <div v-for="comment in comments" :key="comment.id" class="relative border border-gray-300 p-2 rounded-lg mb-2">
                           <div class="flex justify-between items-center">
                             <p class="text-xs text-gray-400">{{ comment.user.name }}</p>
                             <p class="text-xs">{{ formatDate(comment.updated_at) }}</p>
                           </div>
                           <p class="text-gray-800 mt-2 font-bold">{{ comment.content }}</p> 
+                          <!-- Delete comment -->
+                          <div class="flex justify-end mt-3 absolute bottom-0 right-0">
+                            <button v-if="comment.user_id === user.id" @click="deleteComment(comment.id)" class="focus:outline-none">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m6 4.125l2.25 2.25m0 0l2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -280,7 +277,8 @@ export default {
             content: '',
             payment: '',
             country: '',
-            file_id: null,
+            file: null,
+            erros: {},
         });
         return { form };
     },
@@ -318,9 +316,6 @@ export default {
         this.newComment = ''; // Clear the form input
         this.$inertia.get(this.route('dashboard'));
       },
-      handleFileUpload (event) {
-        this.form.file_id = event.target.files[0];
-      },
       formatDate(date) {
         return moment(date).fromNow();
       },
@@ -331,9 +326,9 @@ export default {
           formData.append('content', this.form.content);
           formData.append('payment', this.form.payment);
           formData.append('country', this.form.country);
-          formData.append('file_id', this.form.file_id);
+          formData.append('file', this.form.file);
 
-        await this.form.post('/scams', formData);
+        await this.$inertia.post('/scams', formData);
 
           // Clear form fields
         this.form = {
@@ -341,7 +336,7 @@ export default {
           content: '',
           payment: '',
           country: '',
-          file_id: null,
+          file: null,
         };
 
         // Set success message and flag
@@ -353,6 +348,9 @@ export default {
           this.successMessage = '';
           this.isFormSubmitted = false;
         }, 3000);
+
+         // Reload the page
+        this.$inertia.reload();
 
       } catch (error) {
         // Handle any errors during form submission
@@ -430,7 +428,22 @@ export default {
         } else {
           console.log('Not the right post!');
         }
-      }
+      },
+      deleteComment(postId) {
+        const confirmed = confirm('Are you sure you want to delete this comment?');
+        
+        if (confirmed) {
+          this.$inertia.delete(this.route('comments.destroy', {id : postId }))
+          .then(() => {
+            // Handle successful deletion
+            alert('Comment deleted successfully!');
+          })
+          .catch((error) => {
+            // Handle error during deletion
+            alert('An error occurred while deleting the comment', error);
+          });
+        }
+      },
     }
 }
 </script>
