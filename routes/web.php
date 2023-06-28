@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GoogleSocialiteController;
+use App\Http\Controllers\FacebookSocialiteController;
 use App\Models\Scam;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -65,3 +66,7 @@ Route::middleware([
 //Google Auth
 Route::get('auth/google', [GoogleSocialiteController::class, 'redirectToGoogle']);
 Route::get('callback/google', [GoogleSocialiteController::class, 'handleGoogleCallback']);
+
+//Facebook Auth
+Route::get('auth/facebook', [FacebookSocialiteController::class, 'redirectToFacebook']);
+Route::get('callback/facebook', [FacebookSocialiteController::class, 'handleFacebookCallback']);

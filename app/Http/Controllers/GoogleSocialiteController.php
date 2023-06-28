@@ -16,7 +16,7 @@ class GoogleSocialiteController extends Controller
        //Google Login
        public function redirectToGoogle()
        {
-           return Socialite::driver('google')->stateless()->redirect();
+           return Socialite::driver('google')->redirect();
        }
    
        //Google callback  
@@ -28,7 +28,7 @@ class GoogleSocialiteController extends Controller
                $finduser = User::where('social_id', $user->id)->first();
                if ($finduser) {
                    Auth::login($finduser);
-                   return Inertia::render('Dashboard');
+                   return redirect()->route('dashboard');
                } else {
                    $newUser = User::updateOrCreate(
                        [
@@ -45,7 +45,7 @@ class GoogleSocialiteController extends Controller
                    $role = Role::firstOrCreate(['name' => 'standard']);
                    $newUser->assignRole($role->name);
                    Auth::login($newUser);
-                   return Inertia::render('Dashboard');;
+                   return redirect()->route('dashboard');
                }
            } catch (Exception $e) {
                 dd($e->getMessage());
