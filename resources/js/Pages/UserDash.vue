@@ -76,6 +76,47 @@
                     </div>
                   </div>
     
+                  <!-- Select lists -->
+                  <div class="-mx-3 md:flex mb-6">
+                    
+                    <!-- Type of fake -->
+                    <div class="md:w-1/2 px-3">
+                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-contact">
+                        Type of Scam
+                      </label>
+                      <select
+                        v-model="form.selectedActivity"
+                        class="w-full appearance-none bg-white border border-gray-300 rounded px-4 py-2 leading-tight focus:outline-none focus:shadow-outline"
+                      >
+                        <option value="" disabled>Select a scam activity</option>
+                        <option value="fakeProduct">Fake products seller</option>
+                        <option value="fakeService">Fake service provider</option>
+                        <option value="fakeEmployer">Con employer</option>
+                        <option value="fakeEmployee">Con employee</option>
+                      </select>
+                    </div>
+
+                     <!-- social media site -->
+                    <div class="md:w-1/2 px-3">
+                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-contact">
+                        Where it happened
+                      </label>
+                      <select
+                        v-model="form.selectedPlatform"
+                        class="w-full appearance-none bg-white border border-gray-300 rounded px-4 py-2 leading-tight focus:outline-none focus:shadow-outline"
+                      >
+                        <option value="" disabled>Select social media</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="Whatsapp">Whatsapp</option>
+                        <option value="Twitter">Twitter</option>
+                        <option value="Telegram">Telegram</option>
+                        <option value="Tinder">Tinder</option>
+                      </select>
+                    </div>
+
+                  </div>
+
                   <!-- Content -->
                   <div class="-mx-3 md:flex mb-6">
                     <div class="md:w-full px-3">
@@ -152,6 +193,14 @@
                   </h2>
                   <p class="leading-relaxed">{{ scam.content }}</p>
                   
+                  <!-- Scam platform -->
+                  <div v-if="scam.platform" class="flex items-center mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg> 
+                    <span class="ml-2">{{ scam.platform }}, {{ scam.activity }}</span>
+                  </div>
+
                   <!-- Payment method icon -->
                   <div class="flex items-center mt-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -159,6 +208,7 @@
                     </svg> 
                     <span class="ml-2">{{ scam.payment }}</span>
                   </div>
+
       
                   <!-- File attachment icon -->
                   <div v-if="scam.file" class="flex items-center mt-2">
@@ -270,6 +320,7 @@ export default {
       scams: Object,
       scamPost: Object,
       myScams: Number,
+      comments: Object,
     },
     setup() {
         const form = useForm({
@@ -277,6 +328,8 @@ export default {
             content: '',
             payment: '',
             country: '',
+            selectedActivity: '',
+            selectedPlatform: '',
             file: null,
         });
         return { form };
@@ -325,6 +378,8 @@ export default {
           formData.append('content', this.form.content);
           formData.append('payment', this.form.payment);
           formData.append('country', this.form.country);
+          formData.append('platform', this.form.selectedPlatform);
+          formData.append('activity', this.form.selectedActivity);
           formData.append('file', this.form.file);
 
         await this.$inertia.post(route('scams.store'), formData);
@@ -335,6 +390,8 @@ export default {
           content: '',
           payment: '',
           country: '',
+          selectedActivity: '',
+          selectedPlatform: '',
           file: null,
         };
 
@@ -413,17 +470,9 @@ export default {
             content: this.newComment,
             scam_id: postId,
             user_id: this.user.id,
-          })
-          .then((response) => {
-            console.log(response);
-            //update comment data with the new comment
-            this.comments = response.data.comments;
-            //update the new comment field
-            this.newComment = '';
-          })
-          .catch((error) => {
-            console.log(error);
           });
+          this.newComment = '';
+
         } else {
           console.log('Not the right post!');
         }
