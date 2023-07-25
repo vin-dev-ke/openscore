@@ -13,16 +13,16 @@ use Exception;
 
 class FacebookSocialiteController extends Controller
 {
-    public function redirectToFacebook ()
+    public function redirectToFacebook()
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')->stateless()->redirect();
     }
 
-    public function handleFacebookCallback ()
+    public function handleFacebookCallback()
     {
 
         try {
-            $user = Socialite::driver('facebook')->user();
+            $user = Socialite::driver('facebook')->stateless()->user();
             $finduser = User::where('social_id', $user->id)->first();
             if ($finduser) {
                 Auth::login($finduser);
@@ -46,7 +46,7 @@ class FacebookSocialiteController extends Controller
                 return redirect()->route('dashboard');
             }
         } catch (Exception $e) {
-             dd($e->getMessage());
+            dd($e->getMessage());
         }
     }
 }

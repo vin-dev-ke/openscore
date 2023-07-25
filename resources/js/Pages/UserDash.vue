@@ -3,19 +3,19 @@
 
     <!-- Header -->
     <header class="bg-orange-600 py-4">
-    <div class="container mx-auto flex flex-col items-center w-full md:flex-row md:justify-between">
-      <Link href="/">
-        <div class="flex items-center">
-          <img src="/OS.png" alt="logo" class="h-16 w-16 object-contain"/>
-          <h1 class="font-bold text-green-500 text-3xl uppercase ml-2 mb-0">Open<span class="text-black">Score</span></h1>
-        </div>
-      </Link>
-      <h2 class="text-white text-lg font-mono text-3xl uppercase">Scam Reports Forum</h2>
-      <nav class="space-x-4 md:flex md:items-center md:space-x-4 mt-4 md:mt-0">
-        <Link :href="route('profile.show')" class="text-black hover:text-white">Profile Settings</Link>
-        <Link :href="route('logout')" method="post" as="button" class="text-black hover:text-white">Sign out</Link>
-      </nav>
-    </div>
+      <div class="container mx-auto flex flex-col items-center w-full md:flex-row md:justify-between">
+        <Link href="/">
+          <div class="flex items-center">
+            <img src="/OS.png" alt="logo" class="h-16 w-16 object-contain"/>
+            <h1 class="font-bold text-green-500 text-3xl uppercase ml-2 mb-0">Open<span class="text-black">Score</span></h1>
+          </div>
+        </Link>
+        <h2 class="text-white text-lg font-mono text-3xl uppercase">Scam Reports Forum</h2>
+        <nav class="space-x-4 md:flex md:items-center md:space-x-4 mt-4 md:mt-0">
+          <Link :href="route('profile.show')" class="text-black hover:text-white">Profile Settings</Link>
+          <Link :href="route('logout')" method="post" as="button" class="text-black hover:text-white">Sign out</Link>
+        </nav>
+      </div>
     </header>
 
     <!-- Forum Content -->
@@ -142,8 +142,8 @@
   
                       <!-- Upload file -->                  
                     <div class="mb-3">
-                      <label class="block mb-2 text-sm font-bold text-gray-900 dark:text-black" for="default_size">Upload single supporting document</label>
-                      <input @input="form.file = $event.target.files[0]" type="file" name="file" class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="default_size"/>
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-file">Upload single supporting document</label>
+                      <input @change="onFileChange" type="file" name="file" class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file"/>
                     </div>
                   </div>
     
@@ -234,9 +234,9 @@
                     </button>
       
                     <!-- Share icon -->
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
-                    </svg> -->
+                    </svg>
                   </div>
                 </div>
                 <!-- Comments Modal -->
@@ -283,8 +283,7 @@
                 </div>
               </div>
       
-      
-                <!-- Paginator -->
+              <!-- Paginator -->
               <div class="order-last mt-4 p-2 flex items-center justify-center">
                 <Link 
                   v-for="(link,key) in scams.links" 
@@ -292,7 +291,6 @@
                   :href="link.url" 
                   v-html="link.label"
                   class="px-1"
-                  :class="link.url ? '' : 'text-gray-400'"
                   />
               </div>
     
@@ -338,7 +336,6 @@ export default {
       return {
         search_term: '',
         showCommentBox: true,
-        comments: [],
         selectedPostId: null,
         postId: null,
         newComment: '',
@@ -371,8 +368,12 @@ export default {
       formatDate(date) {
         return moment(date).fromNow();
       },
+      onFileChange(event) {
+        this.form.file = event.target.files[0];
+      },
       async submitScam () {
         try {
+          
           const formData = new FormData();
           formData.append('contact', this.form.contact);
           formData.append('content', this.form.content);
@@ -382,36 +383,36 @@ export default {
           formData.append('activity', this.form.selectedActivity);
           formData.append('file', this.form.file);
 
-        await this.$inertia.post(route('scams.store'), formData);
+          await this.$inertia.post(route('scams.store'), formData);
 
           // Clear form fields
-        this.form = {
-          contact: '',
-          content: '',
-          payment: '',
-          country: '',
-          selectedActivity: '',
-          selectedPlatform: '',
-          file: null,
-        };
+          this.form = {
+            contact: '',
+            content: '',
+            payment: '',
+            country: '',
+            selectedActivity: '',
+            selectedPlatform: '',
+            file: null,
+          };
 
-        // Set success message and flag
-        this.successMessage = 'Form submitted successfully.';
-        this.isFormSubmitted = true;
+          // Set success message and flag
+          this.successMessage = 'Form submitted successfully.';
+          this.isFormSubmitted = true;
 
-        // Clear success message after 3 seconds
-        setTimeout(() => {
-          this.successMessage = '';
-          this.isFormSubmitted = false;
-        }, 3000);
+          // Clear success message after 3 seconds
+          setTimeout(() => {
+            this.successMessage = '';
+            this.isFormSubmitted = false;
+          }, 3000);
 
-         // Reload the page
-        this.$inertia.reload();
+          // Reload the page
+          this.$inertia.reload();
 
       } catch (error) {
-        // Handle any errors during form submission
-        this.errorMessage = 'An error occurred while submitting the form. Please try again!';
-      }      
+          // Handle any errors during form submission
+          this.errorMessage = 'An error occurred while submitting the form. Please try again!';
+        }      
       },
       formatDate(date) {
         return moment(date).fromNow();
