@@ -21,7 +21,9 @@ class ScamController extends Controller
         $scams = Scam::withTrashed()
             ->with('user')
             ->with('file')
-            ->when($request->search_term, function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
+            ->when($request->search_term, function ($query, $search_term) {
+                $query->where('contact', 'LIKE', '%' . $search_term . '%');
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(3);
 
@@ -43,7 +45,7 @@ class ScamController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'content' => ['required', 'string', 'max:255'],
             'contact' => ['required', 'string', 'max:255'],
             'payment' => ['nullable', 'string', 'max:255'],
@@ -52,28 +54,24 @@ class ScamController extends Controller
             'platform' => ['nullable', 'string', 'max:255'],
             'file' => ['nullable'],
         ]);
-    
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-  
+
         $user = Auth::user();
+        //Set the file name to null if no file is uploaded
+        $file_name = null;
+
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $file->store('scam_files', 'public');
             $file_name = $file->getClientOriginalName();
-        } else {
-            // Set the file name to null if no file is uploaded
-            $file_name = null; 
+            $file->store('scam_files', 'public');
         }
 
         Scam::create([
-            'contact' => $validator->validated()['contact'],
-            'content' => $validator->validated()['content'],
-            'payment' => $validator->validated()['payment'],
-            'country' => $validator->validated()['country'],
-            'platform' => $validator->validated()['platform'],
-            'activity' => $validator->validated()['activity'],
+            'contact' => $request->contact,
+            'content' => $request->content,
+            'payment' => $request->payment,
+            'country' => $request->country,
+            'platform' => $request->platform,
+            'activity' => $request->activity,
             'user_id' => $user->id,
             'file' => $file_name,
         ]);
@@ -114,6 +112,5 @@ class ScamController extends Controller
         $scam->delete();
 
         return to_route('dashboard');
-
     }
 }
