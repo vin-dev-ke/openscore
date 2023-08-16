@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
 use App\Models\Scam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class ScamController extends Controller
 {
@@ -113,4 +109,13 @@ class ScamController extends Controller
 
         return to_route('dashboard');
     }
+
+    // public function share(Scam $scam)
+    // {
+
+    //     // Generate the URL for the scam post using the 'url' helper
+    //     $scamUrl = url("/scams/{$scam->id}");
+
+    //     $share_page = \Share::page($scamUrl, $scam->name);
+    // }
 }
