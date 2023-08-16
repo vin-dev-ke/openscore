@@ -25,9 +25,9 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'usersCount'=> User::all()->count(),
-        'scamsCount'=> Scam::all()->count(),
-        'filesCount'=>count(Illuminate\Support\Facades\File::allFiles(storage_path('/app/public/scam_files'))),
+        'usersCount' => User::all()->count(),
+        'scamsCount' => Scam::all()->count(),
+        'filesCount' => count(Illuminate\Support\Facades\File::allFiles(storage_path('/app/public/scam_files'))),
     ]);
 });
 
@@ -60,7 +60,6 @@ Route::middleware([
 
     //Search
     Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
-
 });
 
 //Google Auth
