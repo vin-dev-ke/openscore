@@ -44,8 +44,7 @@
         <div class="container px-5 py-24 mx-auto">
             <div class="flex flex-col text-center w-full mb-20">
                 <h1 class="sm:text-3xl text-2xl font-bold title-font mb-4 text-gray-900">About <span class="uppercase"> OpenScore</span></h1>
-                <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Experience authentic client testing with us for your
-                    next project</p>
+                <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Use the power of the crowd to fight fraud. Share what you know about scammers.</p>
             </div>
             <div class="flex flex-wrap -m-4 text-center">
                 <div class="p-4 md:w-1/3 sm:w-1/2 w-full">
@@ -91,7 +90,7 @@
 
     <!-- How it works section -->
     <section class="text-gray-600 body-font" id="how-it-works">
-    <h1 class="sm:text-3xl text-2xl text-center font-semibold title-font mb-4 text-green-500">How it works</h1>
+    <h1 class="sm:text-4xl text-2xl text-center font-semibold title-font mb-4 text-green-500">How it works</h1>
     <div class="container px-5 py-10 mx-auto flex flex-wrap">
         <div class="flex relative pt-10 pb-20 sm:items-center md:w-2/3 mx-auto">
           <div class="h-full w-6 absolute inset-0 flex items-center justify-center">
@@ -100,13 +99,13 @@
           <div class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-green-500 text-white relative z-10 title-font font-medium text-sm">1</div>
           <div class="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
             <div class="flex-shrink-0 w-24 h-24 bg-green-100 text-indigo-500 rounded-full inline-flex items-center justify-center">
-              <svg fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-12 h-12" viewBox="0 0 24 24">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="gray" class="w-12 h-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
               </svg>
             </div>
             <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
-              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">Shooting Stars</h2>
-              <p class="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">Create an account</h2>
+              <p class="leading-relaxed">You can choose to <Link :href="route('register')" class="text-green-500 underline font-semibold text-lg">register</Link> with Google, Facebook, or a username and password.</p>
             </div>
           </div>
         </div>
@@ -117,13 +116,13 @@
           <div class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-green-500 text-white relative z-10 title-font font-medium text-sm">2</div>
           <div class="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
             <div class="flex-shrink-0 w-24 h-24 bg-green-100 text-indigo-500 rounded-full inline-flex items-center justify-center">
-              <svg fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-12 h-12" viewBox="0 0 24 24">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="gray" class="w-12 h-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
               </svg>
             </div>
             <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
-              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">The Catalyzer</h2>
-              <p class="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">Share your information</h2>
+              <p class="leading-relaxed">Once you are logged in, you can enter all the details you know about a scammer, including their contact details. You can also upload documents or screenshots to support your claims.</p>
             </div>
           </div>
         </div>
@@ -133,15 +132,15 @@
           </div>
           <div class="flex-shrink-0 w-6 h-6 rounded-full mt-10 sm:mt-0 inline-flex items-center justify-center bg-green-500 text-white relative z-10 title-font font-medium text-sm">3</div>
           <div class="flex-grow md:pl-8 pl-6 flex sm:items-center items-start flex-col sm:flex-row">
-            <div class="flex-shrink-0 w-24 h-24 bg-green-100 text-indigo-500 rounded-full inline-flex items-center justify-center">
-              <svg fill="none" stroke="gray" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-12 h-12" viewBox="0 0 24 24">
-                <circle cx="12" cy="5" r="3"></circle>
-                <path d="M12 22V8M5 12H2a10 10 0 0020 0h-3"></path>
+            <div class="flex-shrink-0 w-24 h-24 bg-green-100 text-green-500 rounded-full inline-flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="gray" class="w-12 h-12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
             <div class="flex-grow sm:pl-6 mt-6 sm:mt-0">
-              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">The 400 Blows</h2>
-              <p class="leading-relaxed">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+              <h2 class="font-medium title-font text-gray-900 mb-1 text-xl">Publicize your information</h2>
+              <p class="leading-relaxed">Once you have submitted your information, it will be published on our website.</p>
             </div>
           </div>
         </div>
@@ -150,70 +149,25 @@
     <!-- End How it works section -->
 
     <!-- FAQ section -->
-    <section id="faq">
-        <h1 class="sm:text-3xl text-2xl text-center font-semibold title-font mb-4">Frequently Asked Questions.</h1>
-        <div class="max-w-2xl mx-auto bg-white p-16 rounded">
-
-        <div id="accordion-flush" data-accordion="collapse"
-            data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
-            data-inactive-classes="text-gray-500 dark:text-gray-400">
-            <h2 id="accordion-flush-heading-1">
-                <button type="button" class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-900 rounded-t-xl border-b border-gray-200 dark:border-gray-700 dark:text-white" data-accordion-target="#accordion-flush-body-1" aria-expanded="true" aria-controls="accordion-flush-body-1">
-          <span>What is Flowbite?</span>
-          <svg data-accordion-icon class="w-6 h-6 rotate-180 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-            </h2>
-            <div id="accordion-flush-body-1" aria-labelledby="accordion-flush-heading-1">
-                <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is an open-source library of interactive
-                        components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.</p>
-                    <p class="text-gray-500 dark:text-gray-400">Check out this guide to learn how to <a
-                            href="#"
-                            class="text-blue-600 dark:text-blue-500 hover:underline">get started</a> and start developing
-                        websites even faster with components on top of Tailwind CSS.</p>
-                </div>
-            </div>
-            <h2 id="accordion-flush-heading-2">
-                <button type="button" class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-2" aria-expanded="false" aria-controls="accordion-flush-body-2">
-          <span>Is there a Figma file available?</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-            </h2>
-            <div id="accordion-flush-body-2" class="hidden" aria-labelledby="accordion-flush-heading-2">
-                <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Flowbite is first conceptualized and designed using the
-                        Figma software so everything you see in the library has a design equivalent in our Figma file.</p>
-                    <p class="text-gray-500 dark:text-gray-400">Check out the <a href="https://flowbite.com/figma/"
-                            class="text-blue-600 dark:text-blue-500 hover:underline">Figma design system</a> based on the
-                        utility classes from Tailwind CSS and components from Flowbite.</p>
-                </div>
-            </div>
-            <h2 id="accordion-flush-heading-3">
-                <button type="button" class="flex justify-between items-center py-5 w-full font-medium text-left text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400" data-accordion-target="#accordion-flush-body-3" aria-expanded="false" aria-controls="accordion-flush-body-3">
-          <span>What are the differences between Flowbite and Tailwind UI?</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-            </h2>
-            <div id="accordion-flush-body-3" class="hidden" aria-labelledby="accordion-flush-heading-3">
-                <div class="py-5 border-b border-gray-200 dark:border-gray-700">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from
-                        Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another
-                        difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers
-                        sections of pages.</p>
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">However, we actually recommend using both Flowbite,
-                        Flowbite Pro, and even Tailwind UI as there is no technical reason stopping you from using the best
-                        of two worlds.</p>
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-                    <ul class="pl-5 list-disc text-gray-500 dark:text-gray-400">
-                        <li><a href="https://flowbite.com/pro/"
-                                class="text-blue-600 dark:text-blue-500 hover:underline">Flowbite Pro</a></li>
-                        <li><a href="https://tailwindui.com/" rel="nofollow"
-                                class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-                    </ul>
-                </div>
-            </div>
+    <section id="faq" class="dark:bg-gray-800 dark:text-gray-100">
+      <div class="container flex flex-col justify-center items-center px-4 py-8 mx-auto md:p-8">
+        <h2 class="text-2xl font-semibold sm:text-4xl text-green-500">Frequently Asked Questions</h2>
+        <p class="mt-4 mb-8 dark:text-gray-400">Find answers to your questions about our service here.</p>
+        <div class="space-y-4">
+          <details class="w-full border rounded-lg" open>
+            <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">Is the service free?</summary>
+            <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-500 dark:text-gray-400">Yes, our service is free to use. We do not charge any fees for registering an account, sharing information, or accessing our resources.</p>
+          </details>
+          <details class="w-full border rounded-lg">
+            <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">Are there physical tracking, reporting, and legal services offered?</summary>
+            <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-500 dark:text-gray-400">Yes, we offer physical tracking, reporting, and legal services through our partner third parties. </p>
+          </details>
+          <details class="w-full border rounded-lg">
+            <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">Is payment intervention offered? </summary>
+            <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-500 dark:text-gray-400">Yes, we offer payment intervention services through our third party partners. If the parties in dispute want to try to reach a settlement, we can link them to a negotiator. </p>
+          </details>
         </div>
-        </div>
+      </div>
     </section>
     <!-- End FAQ section -->
 
@@ -221,8 +175,8 @@
     <section class="text-gray-600 body-font relative" id="contact">
       <div class="container px-5 py-24 mx-auto">
         <div class="flex flex-col text-center w-full mb-12">
-          <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-green-500">Reach to us</h1>
-          <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p>
+          <h1 class="sm:text-4xl text-2xl font-semibold title-font mb-4 text-green-500">Reach to us</h1>
+          <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Have any concerns? We are here to help.</p>
         </div>
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
           <div class="flex flex-wrap -m-2">
@@ -270,18 +224,24 @@
     <!-- End Footer Section -->
 
 </template>
-<script setup>
+<script>
 import { Head, Link } from '@inertiajs/vue3';
-
-defineProps({
-  canLogin: Boolean,
-  canRegister: Boolean,
-  laravelVersion: String,
-  phpVersion: String,
-  usersCount: Number,
-  scamsCount: Number,
-  filesCount: Number,
-});
+export default {
+    components: {
+        Head, Link
+    },
+    props: {
+      canLogin: Boolean,
+      canRegister: Boolean,
+      laravelVersion: String,
+      phpVersion: String,
+      usersCount: Number,
+      scamsCount: Number,
+      filesCount: Number,
+    }
+  }
+// defineProps({
+// });
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
