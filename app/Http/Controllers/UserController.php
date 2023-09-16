@@ -29,7 +29,6 @@ class UserController extends Controller
             return Inertia::render('Users', [
                 'users' => $users,
             ]);
-            
         } catch (\Exception $e) {
 
             // If an exception is thrown, redirect the user to the home page
