@@ -16,25 +16,27 @@ class Scam extends Model
         'contact',
         'payment',
         'country',
+        'scammer_name',
+        'amount',
         'platform',
         'activity',
         'file',
         'user_id'
     ];
 
-    protected $dates = [ 'deleted_at' ];
+    protected $dates = ['deleted_at'];
 
-    public function user ()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function file ()
+    public function file()
     {
         return $this->hasOne(File::class);
     }
 
-    public function comments ()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }

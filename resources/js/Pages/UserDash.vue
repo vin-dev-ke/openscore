@@ -76,6 +76,33 @@
                     </div>
                   </div>
     
+                  <!--Amount and Con person name-->
+                  <div class="-mx-3 md:flex mb-6">
+
+                    <!--Scammer name-->
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-scammers-name">
+                        Name of Scammer
+                      </label>
+                      <input v-model="form.scammer_name" name="scammer_name" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-scammers-name" type="text" placeholder="scammer's name" autocomplete="OFF">
+                      <div v-if="errors.scammer_name" v-text="form.errors.scammer_name" class="text-red-500 text-sm mt-2"></div>      
+                    </div>
+
+                    <!--Amount conned-->
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+                        Amount conned
+                      </label>
+                      <div class="relative">
+                        <span class="font-bold absolute inset-y-0 left-0 flex items-center pl-3 pr-2 text-gray-600 bg-gray-300">
+                          USD
+                        </span>
+                        <input v-model="form.amount" name="amount" type="number" class="appearance-none pl-14 pr-3 py-2 border border-gray-300 focus:outline-none block w-full rounded" placeholder="Enter amount" autocomplete="OFF">
+                        <div v-if="errors.amount" v-text="form.errors.amount" class="text-red-500 text-sm mt-2"></div>      
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Select lists -->
                   <div class="-mx-3 md:flex mb-6">
                     
@@ -193,8 +220,16 @@
                   </h2>
                   <p class="leading-relaxed">{{ scam.content }}</p>
                   
+                  <!--Name of scammer-->
+                  <div v-if="scam.scammer_name" class="flex items-center mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span class="ml-2">{{ scam.scammer_name }}</span>
+                  </div>
+
                   <!-- Scam platform -->
-                  <div v-if="scam.platform" class="flex items-center mt-2">
+                  <div v-if="scam.platform || scam.activity" class="flex items-center mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
                     </svg> 
@@ -202,14 +237,24 @@
                   </div>
 
                   <!-- Payment method icon -->
-                  <div class="flex items-center mt-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                    </svg> 
-                    <span class="ml-2">{{ scam.payment }}</span>
+                  <div v-if="scam.payment" class="flex items-center mt-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                      </svg>
+                      <span class="ml-2">{{ scam.payment }}</span>
                   </div>
 
-      
+                  <!--Amount conned-->
+                  <div v-if="scam.amount" class="flex items-center mt-3">
+                    <div class="flex items-center w-full">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-yellow-800">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span class="ml-1">Amount lost in USD:</span>
+                      <span class="ml-1 bg-yellow-900 text-gray-200 px-2 py-1 rounded font-bold">{{ scam.amount }}</span>
+                    </div>
+                  </div>
+
                   <!-- File attachment icon -->
                   <div v-if="scam.file" class="flex items-center mt-2">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -327,6 +372,8 @@ export default {
             content: '',
             payment: '',
             country: '',
+            scammer_name: '',
+            amount: '',
             selectedActivity: '',
             selectedPlatform: '',
             file: null,
@@ -380,6 +427,8 @@ export default {
           formData.append('content', this.form.content);
           formData.append('payment', this.form.payment);
           formData.append('country', this.form.country);
+          formData.append('scammer_name', this.form.scammer_name);
+          formData.append('amount', this.form.amount);
           formData.append('platform', this.form.selectedPlatform);
           formData.append('activity', this.form.selectedActivity);
           formData.append('file', this.form.file);
@@ -392,6 +441,8 @@ export default {
             content: '',
             payment: '',
             country: '',
+            scammer_name: '',
+            amount: '',
             selectedActivity: '',
             selectedPlatform: '',
             file: null,
