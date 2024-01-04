@@ -90,14 +90,14 @@
 
                     <!--Amount conned-->
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-amount">
                         Amount conned
                       </label>
                       <div class="relative">
                         <span class="font-bold absolute inset-y-0 left-0 flex items-center pl-3 pr-2 text-gray-600 bg-gray-300">
                           USD
                         </span>
-                        <input v-model="form.amount" name="amount" type="number" class="appearance-none pl-14 pr-3 py-2 border border-gray-300 focus:outline-none block w-full rounded" placeholder="Enter amount" autocomplete="OFF">
+                        <input v-model="form.amount" name="amount" type="number" class="appearance-none pl-14 pr-3 py-2 border border-gray-300 focus:outline-none block w-full rounded" placeholder="Enter amount" id="grid-amount" autocomplete="OFF">
                         <div v-if="errors.amount" v-text="form.errors.amount" class="text-red-500 text-sm mt-2"></div>      
                       </div>
                     </div>
@@ -108,10 +108,12 @@
                     
                     <!-- Type of fake -->
                     <div class="md:w-1/2 px-3">
-                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-contact">
+                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-scamtype">
                         Type of Scam
                       </label>
                       <select
+                        id="grid-scamtype"
+                        name="activity"
                         v-model="form.selectedActivity"
                         class="w-full appearance-none bg-white border border-gray-300 rounded px-4 py-2 leading-tight focus:outline-none focus:shadow-outline"
                       >
@@ -125,10 +127,12 @@
 
                      <!-- social media site -->
                     <div class="md:w-1/2 px-3">
-                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-contact">
+                       <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-platform">
                         Where it happened
                       </label>
                       <select
+                        id="grid-platform"
+                        name="platform"
                         v-model="form.selectedPlatform"
                         class="w-full appearance-none bg-white border border-gray-300 rounded px-4 py-2 leading-tight focus:outline-none focus:shadow-outline"
                       >
@@ -147,7 +151,7 @@
                   <!-- Content -->
                   <div class="-mx-3 md:flex mb-6">
                     <div class="md:w-full px-3">
-                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-password">
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-content">
                         Description
                       </label><span class="text-red-500">*</span>
                       <textarea v-model="form.content" name="content" class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3" id="grid-content" type="text" rows="3" required></textarea>
@@ -169,7 +173,7 @@
   
                       <!-- Upload file -->                  
                     <div class="mb-3">
-                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-file">Upload single supporting document</label>
+                      <label class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="file">Upload single supporting document</label>
                       <input @change="onFileChange" type="file" name="file" class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file"/>
                     </div>
                   </div>
@@ -347,6 +351,7 @@
       
     </main>
 </template>
+
 <script>
 import { Head } from '@inertiajs/vue3';
 import { useForm } from '@inertiajs/vue3';
@@ -378,6 +383,7 @@ export default {
             selectedPlatform: '',
             file: null,
         });
+
         return { form };
     },
     data() {
@@ -419,51 +425,51 @@ export default {
       onFileChange(event) {
         this.form.file = event.target.files[0];
       },
-      async submitScam () {
-        try {
-          
-          const formData = new FormData();
-          formData.append('contact', this.form.contact);
-          formData.append('content', this.form.content);
-          formData.append('payment', this.form.payment);
-          formData.append('country', this.form.country);
-          formData.append('scammer_name', this.form.scammer_name);
-          formData.append('amount', this.form.amount);
-          formData.append('platform', this.form.selectedPlatform);
-          formData.append('activity', this.form.selectedActivity);
-          formData.append('file', this.form.file);
+      async submitScam() {
+          try {
+            const formData = new FormData();
+            formData.append('contact', this.form.contact);
+            formData.append('content', this.form.content);
+            formData.append('payment', this.form.payment);
+            formData.append('country', this.form.country);
+            formData.append('scammer_name', this.form.scammer_name);
+            formData.append('amount', this.form.amount);
+            formData.append('platform', this.form.selectedPlatform);
+            formData.append('activity', this.form.selectedActivity);
+            formData.append('file', this.form.file);
 
-          await this.$inertia.post(route('scams.store'), formData);
+            await this.$inertia.post(this.route('scams.store'), formData);
+            
+            // Clear form fields
+            this.form = {
+              contact: '',
+              content: '',
+              payment: '',
+              country: '',
+              scammer_name: '',
+              amount: '',
+              selectedActivity: '',
+              selectedPlatform: '',
+              file: null,
+            };
 
-          // Clear form fields
-          this.form = {
-            contact: '',
-            content: '',
-            payment: '',
-            country: '',
-            scammer_name: '',
-            amount: '',
-            selectedActivity: '',
-            selectedPlatform: '',
-            file: null,
-          };
+            // Set success message and flag
+            this.successMessage = 'Form submitted successfully.';
+            this.isFormSubmitted = true;
 
-          // Set success message and flag
-          this.successMessage = 'Form submitted successfully.';
-          this.isFormSubmitted = true;
+            // Clear success message after 3 seconds
+            setTimeout(() => {
+              this.successMessage = '';
+              this.isFormSubmitted = false;
+            }, 3000);
 
-          // Clear success message after 3 seconds
-          setTimeout(() => {
-            this.successMessage = '';
-            this.isFormSubmitted = false;
-          }, 3000);
-
-          // Reload the page
-          this.$inertia.reload();
+            // Reload the page
+            this.$inertia.reload();
 
       } catch (error) {
-          // Handle any errors during form submission
-          this.errorMessage = 'An error occurred while submitting the form. Please try again!';
+           // Handle any errors during form submission
+           console.log(error);
+           this.errorMessage = 'An error occurred while submitting the form. Please try again!';
         }      
       },
       formatDate(date) {

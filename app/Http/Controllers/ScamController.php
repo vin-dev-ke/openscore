@@ -9,13 +9,20 @@ use Inertia\Inertia;
 
 class ScamController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->only('index');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+
         $scams = Scam::withTrashed()
             ->with('user')
+            ->withCount('comments')
             ->with('file')
             ->when($request->search_term, function ($query, $search_term) {
                 $query->where('contact', 'LIKE', '%' . $search_term . '%');
@@ -74,7 +81,7 @@ class ScamController extends Controller
             'activity' => $request->activity,
             'user_id' => $user->id,
             'file' => $file_name,
-        ]);
+         ]);
 
         return redirect()->route('dashboard');
     }
