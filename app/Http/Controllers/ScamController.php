@@ -22,8 +22,6 @@ class ScamController extends Controller
     {
         $scams = Scam::withTrashed()
             ->with('user')
-            ->withCount('comments')
-            ->with('file')
             ->when($request->search_term, function ($query, $search_term) {
                 $query->where('contact', 'LIKE', '%' . $search_term . '%');
             })
