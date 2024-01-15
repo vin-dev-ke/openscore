@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Scam;
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -19,7 +20,6 @@ class ScamController extends Controller
      */
     public function index(Request $request)
     {
-
         $scams = Scam::withTrashed()
             ->with('user')
             ->withCount('comments')
@@ -49,39 +49,40 @@ class ScamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => ['required', 'string', 'max:255'],
             'contact' => ['required', 'string', 'max:255'],
             'payment' => ['nullable', 'string', 'max:255'],
-            'country' => ['nullable', 'string', 'max:255'],
             'scammer_name' => ['nullable', 'string', 'max:255'],
-            'amount' => ['nullable', 'numeric', 'max:255'],
-            'activity' => ['nullable', 'string', 'max:255'],
+            'amount' => ['nullable', 'numeric'],
+            'scam_activity' => ['nullable', 'string', 'max:255'],
             'platform' => ['nullable', 'string', 'max:255'],
-            'file' => ['nullable'],
+            'comments' => ['nullable', 'text'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'file_id' => ['nullable',],
         ]);
 
         $user = Auth::user();
-        //Set the file name to null if no file is uploaded
-        $file_name = null;
+
+        // Set the file_id to null if no file is uploaded
+        $file_id = null;
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $file_name = $file->getClientOriginalName();
-            $file->store('scam_files', 'public');
+            $fileModel = File::create(['path' => $file->store('scam_files', 'public')]);
+            $file_id = $fileModel->id;
         }
 
         Scam::create([
             'contact' => $request->contact,
-            'content' => $request->content,
             'payment' => $request->payment,
-            'country' => $request->country,
             'scammer_name' => $request->scammer_name,
             'amount' => $request->amount,
+            'scam_activity' => $request->scam_activity,
             'platform' => $request->platform,
-            'activity' => $request->activity,
+            'comments' => $request->comments,
+            'country' => $request->country,
+            'file_id' => $file_id,
             'user_id' => $user->id,
-            'file' => $file_name,
-         ]);
+        ]);
 
         return redirect()->route('dashboard');
     }

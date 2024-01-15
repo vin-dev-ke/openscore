@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('scams', function (Blueprint $table) {
-            $table->unsignedBigInteger('comment_id')->nullable();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('path');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('scams', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('files');
     }
 };
