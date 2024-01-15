@@ -458,7 +458,7 @@
 
                             <!-- Scam platform -->
                             <div
-                                v-if="scam.platform || scam.activity"
+                                v-if="scam.platform || scam.scam_activity"
                                 class="flex items-center mt-2"
                             >
                                 <svg
@@ -477,7 +477,7 @@
                                 </svg>
                                 <span class="ml-2"
                                     >{{ scam.platform }},
-                                    {{ scam.activity }}</span
+                                    {{ scam.scam_activity }}</span
                                 >
                             </div>
 
