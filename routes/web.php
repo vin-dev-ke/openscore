@@ -7,6 +7,11 @@ use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ScamController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,35 +36,26 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
 
     //Dashboard
-    Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     //Users
     Route::middleware(['admin'])->group(function () {
-        Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-        Route::delete('/users/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
-        Route::get('users/restore/{id}', [App\Http\Controllers\UserController::class, 'restore'])->name('users.restore');
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     });
 
     //Scams
-    Route::resource('/scams', App\Http\Controllers\ScamController::class);
-
-    //Comments
-    Route::get('comments/{id}', [App\Http\Controllers\CommentController::class, 'show'])->name('comments');
-    Route::post('scams/{id}/comments', [App\Http\Controllers\CommentController::class, 'store']);
-    Route::delete('comments/{id}', [App\Http\Controllers\CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::resource('/scams', ScamController::class);
 
     //File upload
-    Route::post('/upload', [App\Http\Controllers\FileController::class, 'upload']);
+    Route::post('/upload', [FileController::class, 'upload']);
 
     //Search
-    Route::get('search', [App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
+    Route::get('search', [SearchController::class, 'index'])->name('search.index');
 });
 
 //Google Auth

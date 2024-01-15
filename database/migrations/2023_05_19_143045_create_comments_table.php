@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->text('content');
             $table->unsignedBigInteger('scam_id');
-            $table->foreign('scam_id')
-                ->references('id')
-                ->on('scams')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->softDeletes();
+
+            // Foreign key
+            $table->foreign('scam_id')->references('id')->on('scams')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

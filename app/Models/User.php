@@ -70,9 +70,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Scam::class);
     }
-
-    public function comments ()
-    {
-        return $this->hasMany(Comment::class);
-    }
 }
