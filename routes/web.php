@@ -12,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScamController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\SearchController;
-
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,6 +50,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     //Scams
     Route::resource('/scams', ScamController::class);
+
+    //Comments
+    Route::get('comments', [CommentController::class, 'index']);
+    Route::get('comments/{id}', [CommentController::class, 'show'])->name('comments');
+    Route::post('scams/{id}/comments', [CommentController::class, 'store']);
+    Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     //File upload
     Route::post('/upload', [FileController::class, 'upload']);

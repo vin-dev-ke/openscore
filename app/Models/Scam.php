@@ -36,5 +36,9 @@ class Scam extends Model
     public function file(): HasOne
     {
         return $this->hasOne(File::class);
+    } 
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
     }
 }
