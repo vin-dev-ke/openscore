@@ -282,15 +282,15 @@
                                 <div class="md:w-full px-3">
                                     <label
                                         class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-                                        for="grid-content"
+                                        for="grid-description"
                                     >
                                         Description </label
-                                    ><span class="text-red-500">*</span>
+                                    >
                                     <textarea
-                                        v-model="form.content"
-                                        name="comments"
+                                        v-model="form.description"
+                                        name="description"
                                         class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-                                        id="grid-content"
+                                        id="grid-description"
                                         type="text"
                                         rows="3"
                                         required
@@ -299,8 +299,8 @@
                                         Tell us what happened in brief
                                     </p>
                                     <div
-                                        v-if="errors.content"
-                                        v-text="form.errors.content"
+                                        v-if="errors.description"
+                                        v-text="form.errors.description"
                                         class="text-red-500 text-sm mt-2"
                                         required
                                     ></div>
@@ -430,7 +430,7 @@
                                     {{ scam.country }}</span
                                 >
                             </h2>
-                            <p class="leading-relaxed">{{ scam.content }}</p>
+                            <p v-if="scam.description" class="leading-relaxed p-4 bg-gray-200 text-red-700 font-semibold">{{ scam.description }}</p>
 
                             <!--Name of scammer-->
                             <div
@@ -658,11 +658,11 @@
 
                                 <!-- Display existing comments or "No comments" message -->
                                 <div v-if="comments && comments.length > 0">
-                                    <div class="grid grid-cols-3 gap-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         <div
                                             v-for="comment in comments"
                                             :key="comment.id"
-                                            class="relative border border-gray-300 p-2 rounded-lg mb-2"
+                                            class="relative bg-white border border-gray-300 p-4 shadow-md rounded-lg mb-4"
                                         >
                                             <div
                                                 class="flex justify-between items-center"
@@ -771,12 +771,12 @@ export default {
     setup() {
         const form = useForm({
             contact: "",
+            description: "",
             payment: "",
             scammer_name: "",
             amount: "",
             selectedActivity: "",
             selectedPlatform: "",
-            comments: "",
             country: "",
             file_id: null,
         });
@@ -840,7 +840,7 @@ export default {
             formData.append("amount", this.form.amount);
             formData.append("scam_activity", this.form.selectedActivity);
             formData.append("platform", this.form.selectedPlatform);
-            formData.append("comments", this.form.comments);
+            formData.append("description", this.form.description);
             formData.append("country", this.form.country);
             formData.append("file_id", this.form.file_id);
 
@@ -862,7 +862,7 @@ export default {
                     amount: "",
                     selectedActivity: "",
                     selectedPlatform: "",
-                    comments: "",
+                    description: "",
                     country: "",
                     file_id: null,
                 };
@@ -881,7 +881,6 @@ export default {
                 this.$inertia.reload();
             } catch (error) {
                 // Handle any errors during form submission
-                console.log(error);
                 this.errorMessage =
                     "An error occurred while submitting the form. Please try again!";
             }
@@ -935,18 +934,19 @@ export default {
         },
         loadComments(postId) {
             try {
-                this.$inertia.visit(this.route("comments", { id: postId }), {
-                    preserveScroll: true,
-                    preserveState: true,
-                    only: ["comments"],
-                    onSuccess: (response) => {
-                        const comments = response.props.comments;
-                        this.comments = comments;
-                    },
-                    onError: (error) => {
-                        console.error("Error loading comments:", error);
-                    },
-                });
+                 this.$inertia.visit(this.route("comments", { id: postId }), {
+                     preserveScroll: true,
+                     preserveState: true,
+                     only: ["comments"],
+                     onSuccess: (response) => {
+                         const comments = response.props.comments;
+                         console.log(comments);
+                         //this.comments = comments;
+                     },
+                     onError: (error) => {
+                         console.error("Error loading comments:", error);
+                     },
+                 });
             } catch (error) {
                 console.error("Error loading method:", error);
             }

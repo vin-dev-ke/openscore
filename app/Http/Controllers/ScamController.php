@@ -49,11 +49,11 @@ class ScamController extends Controller
         $request->validate([
             'contact' => ['required', 'string', 'max:255'],
             'payment' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'scammer_name' => ['nullable', 'string', 'max:255'],
             'amount' => ['nullable', 'numeric'],
             'scam_activity' => ['nullable', 'string', 'max:255'],
             'platform' => ['nullable', 'string', 'max:255'],
-            'comments' => ['nullable', 'text'],
             'country' => ['nullable', 'string', 'max:255'],
             'file_id' => ['nullable',],
         ]);
@@ -76,7 +76,7 @@ class ScamController extends Controller
             'amount' => $request->amount,
             'scam_activity' => $request->scam_activity,
             'platform' => $request->platform,
-            'comments' => $request->comments,
+            'description' => $request->description,
             'country' => $request->country,
             'file_id' => $file_id,
             'user_id' => $user->id,
