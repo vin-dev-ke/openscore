@@ -20,7 +20,7 @@ class Scam extends Model
         'amount',
         'scam_activity',
         'platform',
-        'comments',
+        'description',
         'country',
         'file_id',
         'user_id'
@@ -36,5 +36,10 @@ class Scam extends Model
     public function file(): HasOne
     {
         return $this->hasOne(File::class);
+    } 
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

@@ -10,10 +10,17 @@ use Inertia\Inertia;
 
 class CommentController extends Controller
 {  
+    public function index()
+    {
+        $comments = Comment::all();
+        return response()->json(['comments' => $comments]);
+    }
+
     public function show (int $id)
     {
-        $post = Scam::with('comments.user')->findOrFail($id);
-        $comments = $post->comments;
+        $comments = Comment::with('scam','user')
+            ->where('scam_id', $id)
+            ->get();
 
         return Inertia::render('UserDash', [
             'comments' => $comments,
