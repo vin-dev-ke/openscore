@@ -23,8 +23,9 @@ use App\Http\Controllers\CommentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
+    $directory = storage_path('/app/public/scam_files');
+    $filesCount = File::exists($directory) ? count(File::allFiles($directory)) : 0;
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -32,7 +33,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'usersCount' => User::all()->count(),
         'scamsCount' => Scam::all()->count(),
-        'filesCount' => count(Illuminate\Support\Facades\File::allFiles(storage_path('/app/public/scam_files'))),
+        'filesCount' => $filesCount,
     ]);
 });
 
