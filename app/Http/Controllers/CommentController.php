@@ -18,12 +18,23 @@ class CommentController extends Controller
 
     public function show (int $id)
     {
+        $user = Auth::user();
         $comments = Comment::with('scam','user')
             ->where('scam_id', $id)
             ->get();
+        $search_term = "";
+        $scams = Scam::when("", function($query,$search_term){$query->where('contact', 'LIKE','%'.$search_term.'%');})
+            ->with('user')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+        $myScams = $user->scams->count();
 
         return Inertia::render('UserDash', [
             'comments' => $comments,
+            'user' => $user,
+            'scams' => $scams,
+            'myScams' => $myScams,
         ]);
     }
 
@@ -51,8 +62,8 @@ class CommentController extends Controller
     public function destroy(int $id)
     {
         $comment = Comment::findOrFail($id);
-        $comment->delete(); 
-        
-        return redirect()->back();
+        $comment->delete();
+
+        return redirect()->back()->with('message', 'Comment deleted successfully');
     }
 }

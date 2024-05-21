@@ -536,12 +536,12 @@
                     </svg>
                   </button>
   
-                  <!-- Share icon -->
-                  <!-- <button @click="sharePost(scam.id)" class="focus:outline-none ml-2">
+                  <!-- Share icon  -->
+                   <button @click="sharePost(scam.id)" class="focus:outline-none ml-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ml-2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z" />
                         </svg>
-                      </button> -->
+                      </button>
                 </div>
               </div>
               <!-- Comments Modal -->
@@ -576,12 +576,14 @@
                     <textarea
                       v-model="newComment"
                       cols="20"
+                      ref="newComment"
                       rows="3"
                       class="w-full border border-gray-300 p-2 rounded-lg mb-2"
                     ></textarea>
                     <button
                       type="submit"
                       class="bg-orange-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg mb-3"
+                      
                     >
                       Comment
                     </button>
@@ -742,7 +744,8 @@
             0,
             Math.floor(username.length / 2)
           )}*${username.substring(Math.ceil(username.length / 2))}`;
-          return '${hiddenUsername}@${domain}';
+          return contact
+          //return '${hiddenUsername}@${domain}';
         } else {
           const length = contact.length;
           const hiddenDigits = length > 6 ? "*" : "**";
@@ -832,17 +835,20 @@
         const confirmed = confirm("Are you sure you want to delete the resource?");
   
         if (confirmed) {
-          this.$inertia
-            .delete(this.route("scams.destroy", { scam: postId }))
-            .then(() => {
-              // Handle successful deletion
-              alert("Scam deleted successfully!");
-            })
-            .catch((error) => {
-              // Handle error during deletion
-              alert("An error occurred while deleting the post", error);
-            });
-        }
+        this.$inertia.delete(this.route("comments.destroy", { id: commentId }), {
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: () => {
+            // Remove the deleted comment from the comments array
+            this.comments = this.comments.filter(comment => comment.id !== commentId);
+            alert("Comment deleted successfully!");
+          },
+          onError: (error) => {
+            console.error("Error deleting comment:", error);
+            alert("An error occurred while deleting the comment.");
+          }
+        });
+      }
       },
       toggleComments(postId) {
         if (this.selectedPostId === postId && this.showCommentBox) {
@@ -880,11 +886,11 @@
       },
       sendComment(postId) {
         if (this.selectedPostId === postId) {
-          this.$inertia.post('/scams/${postId}/comments', {
-            content: this.newComment,
-            scam_id: postId,
-            user_id: this.user.id,
-          });
+        this.$inertia.post(`/scams/${postId}/comments`, {
+          content: this.newComment,
+          scam_id: postId,
+          user_id: this.user.id,
+        })
           this.newComment = "";
         } else {
           console.log("Not the right post!");
