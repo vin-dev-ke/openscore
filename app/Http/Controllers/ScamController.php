@@ -10,16 +10,17 @@ use Inertia\Inertia;
 
 class ScamController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin')->only('index');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('admin')->only('index');
+    // }
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $this->middleware('admin')->only('index');
         $scams = Scam::withTrashed()
             ->with('user')
             ->when($request->search_term, function ($query, $search_term) {
@@ -91,6 +92,21 @@ class ScamController extends Controller
     public function show(int $id)
     {
         //
+        $user = Auth::user();
+        $scams = Scam::withTrashed()
+            ->with('user')
+            ->when($id, function ($query, $id) {
+                $query->where('id', '=', $id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+        $myScams = $user->scams->count();
+
+        return Inertia::render('UserScam', [
+            'scams' => $scams,
+            'user' => $user,
+            'myScam' => $myScams
+        ]);
     }
 
     /**
