@@ -38,7 +38,7 @@
                     <!-- Scam Content -->
                     <div class="p-4">
                         <p class="text-gray-700 leading-relaxed">
-                            {{ scam.content }}
+                            {{ scam.description }}
                         </p>
                     </div>
                     <!-- Scam Comments Count -->

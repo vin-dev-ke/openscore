@@ -20,18 +20,20 @@ class ScamController extends Controller
      */
     public function index(Request $request)
     {
-        $this->middleware('admin')->only('index');
-        $scams = Scam::withTrashed()
-            ->with('user')
-            ->when($request->search_term, function ($query, $search_term) {
-                $query->where('contact', 'LIKE', '%' . $search_term . '%');
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(3);
+        $role = Auth::user()->getRoleNames()->first();
+        if($role === 'admin' || $role === 'moderator') {
+            $scams = Scam::withTrashed()
+                ->with('user')
+                ->when($request->search_term, function ($query, $search_term) {
+                    $query->where('contact', 'LIKE', '%' . $search_term . '%');
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(3);
 
-        return Inertia::render('Scam', [
-            'scams' => $scams
-        ]);
+            return Inertia::render('Scam', [
+                'scams' => $scams
+            ]);
+        }
     }
 
     /**
