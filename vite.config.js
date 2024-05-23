@@ -18,4 +18,9 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            external: ['@chartkick/chartkick'], // Add this line to mark Chartkick as external
+        },
+    },
 });

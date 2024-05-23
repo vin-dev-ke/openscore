@@ -48,6 +48,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::get('users/restore/{id}', [UserController::class, 'restore'])->name('users.restore');
     });
 
+    //CommentPosts
+    Route::middleware(['moderator'])->group(function () {
+    });
+
     //Scams
     Route::resource('/scams', ScamController::class);
 
