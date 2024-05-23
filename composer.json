@@ -15,7 +15,7 @@
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.8",
         "nesbot/carbon": "^2.66",
-        "spatie/laravel-permission": "^5.10",
+        "spatie/laravel-permission": "^6.7",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

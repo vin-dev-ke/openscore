@@ -309,7 +309,58 @@
                     />
                   </div>
                 </div>
+                 <!-- Select lists -->
+                 <div class="-mx-3 md:flex mb-6">
+                  <!-- Type of fake -->
+                  <div class="md:w-1/2 px-3">
+                    <label
+                      class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                      for="grid-scamtype"
+                    >
+                      Extra Services
+                    </label>
+                    <select
+                      id="grid-scamtype"
+                      ref="legalService"
+                      name="legal_service"
+                      v-model="legalService"
+                      class="w-full appearance-none bg-white border border-gray-300 rounded px-4 py-2 leading-tight focus:outline-none focus:shadow-outline"
+                    >
+                      <option value="" disabled>Legal Services</option>
+                      <option value="fakeProduct">Private investor</option>
+                      <option value="fakeService">Negotiator</option>
+                      <option value="fakeEmployer">Cousellor</option>
+                      <option value="fakeEmployee">Debt colloctor/Auctioneer</option>
+                    </select>
+                  </div>
   
+                  <!-- contacts of the user -->
+                  <div v-if="needLegalService" class="md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      class="inline-flex uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+                      for="grid-contact"
+                    >
+                      Leave your Email or contacts here
+                    </label>
+                    <span class="text-red-500">*</span>
+                    <input
+                      v-model="form.contact"
+                      name="contact"
+                      class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
+                      id="grid-contact"
+                      type="text"
+                      placeholder="Your contact"
+                      autocomplete="OFF"
+                      required
+                    />
+                    <div
+                      v-if="errors.contact"
+                      v-text="form.errors.contact"
+                      class="text-red-500 text-sm mt-2"
+                      required
+                    ></div>
+                  </div>
+                </div>
                 <!-- Save/Cancel buttons -->
                 <div class="flex justify-between">
                   <button
@@ -686,6 +737,7 @@
         scammer_name: "",
         amount: "",
         selectedActivity: "",
+        selectedServices:"",
         selectedPlatform: "",
         country: "",
         file_id: null,
@@ -703,6 +755,8 @@
           showCommentBox: true,
           selectedPostId: null,
           postId: null,
+          needLegalService: false,
+          legalService: "",
           newComment: "",
           successMessage: "",
           errorMessage: "",
@@ -714,6 +768,14 @@
         // Focus the search input if there is any value
         if (newVal !== "") {
           this.$refs.searchInput.focus();
+        }
+      },
+      legalService(newVal) {
+        // Focus the search input if there is any value
+        if (newVal !== "") {
+          this.needLegalService = true;
+        } else {
+          this.needLegalService = false;
         }
       },
     },
@@ -794,6 +856,7 @@
             payment: "",
             scammer_name: "",
             amount: "",
+            selectedServices:"",
             selectedActivity: "",
             selectedPlatform: "",
             description: "",

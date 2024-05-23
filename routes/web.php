@@ -32,7 +32,6 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
         'usersCount' => User::all()->count(),
-        'scamsCount' => Scam::all()->count(),
         'filesCount' => $filesCount,
     ]);
 });
